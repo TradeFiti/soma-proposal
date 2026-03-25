@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soma Languages — Student Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ========== RESET & BASE ========== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f8f9ff;
+      color: #1a1a2e;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+    input { font-family: inherit; }
+
+    /* ========== PREVIEW BANNER ========== */
+    .preview-banner {
+      background: linear-gradient(90deg, #0a1628, #162040);
+      color: #c9a84c;
+      text-align: center;
+      padding: 8px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+    .preview-banner a {
+      color: #fff;
+      text-decoration: underline;
+      transition: opacity 0.2s;
+    }
+    .preview-banner a:hover { opacity: 0.8; }
+
+    /* ========== LAYOUT ========== */
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
+      padding-top: 32px; /* banner height */
+    }
+
+    /* ========== SIDEBAR ========== */
+    .sidebar {
+      width: 260px;
+      min-width: 260px;
+      background: #0a1628;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 32px;
+      left: 0;
+      bottom: 0;
+      z-index: 900;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar-logo {
+      padding: 28px 24px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #c9a84c 0%, #e8c868 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0a1628;
+      flex-shrink: 0;
+    }
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .logo-text span:first-child {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+    .logo-text span:last-child {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.4);
+      font-weight: 500;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 16px 12px;
+      overflow-y: auto;
+    }
+    .nav-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.3);
+      padding: 12px 12px 8px;
+      font-weight: 600;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.55);
+      transition: all 0.2s ease;
+      margin-bottom: 2px;
+      position: relative;
+    }
+    .nav-item:hover {
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.85);
+    }
+    .nav-item.active {
+      background: rgba(201, 168, 76, 0.12);
+      color: #c9a84c;
+    }
+    .nav-item.active .nav-icon svg { stroke: #c9a84c; }
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .nav-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .nav-badge {
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 99px;
+      margin-left: auto;
+    }
+    .nav-badge.new {
+      background: linear-gradient(135deg, #2d5bff, #5b7fff);
+      color: #fff;
+    }
+    .nav-badge.count {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .sidebar-profile {
+      padding: 16px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .profile-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c9a84c, #e8c868);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: #0a1628;
+      flex-shrink: 0;
+    }
+    .profile-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .profile-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .profile-plan {
+      font-size: 0.65rem;
+      color: #c9a84c;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .profile-plan::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      background: #c9a84c;
+      border-radius: 50%;
+    }
+    .settings-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      color: rgba(255,255,255,0.4);
+      transition: all 0.2s;
+    }
+    .settings-btn:hover {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.7);
+    }
+    .settings-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ========== MAIN CONTENT ========== */
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      min-height: 100vh;
+    }
+
+    /* ========== TOP BAR ========== */
+    .topbar {
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #fff;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      position: sticky;
+      top: 32px;
+      z-index: 800;
+    }
+    .mobile-toggle {
+      display: none;
+      width: 38px;
+      height: 38px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: #f0f1f5;
+      color: #1a1a2e;
+      flex-shrink: 0;
+    }
+    .mobile-toggle svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+    .search-bar {
+      flex: 1;
+      max-width: 480px;
+      position: relative;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 10px 16px 10px 42px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      background: #f8f9ff;
+      color: #1a1a2e;
+      transition: all 0.2s;
+      outline: none;
+    }
+    .search-bar input::placeholder { color: #9ca3af; }
+    .search-bar input:focus {
+      border-color: #2d5bff;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(45,91,255,0.08);
+    }
+    .search-bar svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      stroke: #9ca3af;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      pointer-events: none;
+    }
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: auto;
+    }
+    .notif-btn {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      transition: background 0.2s;
+    }
+    .notif-btn:hover { background: #f0f1f5; }
+    .notif-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: #6b7280;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .notif-dot {
+      position: absolute;
+      top: 9px;
+      right: 10px;
+      width: 8px;
+      height: 8px;
+      background: #ef4444;
+      border-radius: 50%;
+      border: 2px solid #fff;
+    }
+    .book-lesson-btn {
+      padding: 10px 22px;
+      background: linear-gradient(135deg, #c9a84c, #d4b65e);
+      color: #0a1628;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: all 0.25s;
+      box-shadow: 0 2px 8px rgba(201,168,76,0.25);
+      white-space: nowrap;
+    }
+    .book-lesson-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(201,168,76,0.35);
+    }
+
+    /* ========== CONTENT AREA ========== */
+    .content {
+      padding: 28px 32px 48px;
+    }
+
+    /* ========== WELCOME ========== */
+    .welcome {
+      margin-bottom: 28px;
+    }
+    .welcome h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+    }
+    .welcome p {
+      color: #6b7280;
+      font-size: 0.95rem;
+    }
+    .streak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      padding: 6px 14px;
+      background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(249,115,22,0.08));
+      border: 1px solid rgba(239,68,68,0.12);
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #dc2626;
+    }
+
+    /* ========== STATS ROW ========== */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px;
+      border: 1px solid rgba(0,0,0,0.04);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      transition: all 0.25s;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: #6b7280;
+      font-weight: 500;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #1a1a2e;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-sub {
+      font-size: 0.7rem;
+      color: #10b981;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .stat-sub svg {
+      width: 12px;
+      height: 12px;
+      stroke: #10b981;
+      fill: none;
+      stroke-width: 2.5;
+    }
+    .stat-sub.neutral { color: #6b7280; }
+    .stat-sub.neutral svg { stroke: #6b7280; }
+    .stat-level {
+      font-size: 0.7rem;
+      color: #2d5bff;
+      font-weight: 600;
+    }
+
+    /* ========== NEXT LESSON CARD ========== */
+    .next-lesson {
+      background: linear-gradient(135deg, #0a1628 0%, #162040 60%, #1a2a50 100%);
+      border-radius: 18px;
+      padding: 28px 32px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .next-lesson::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .next-lesson-info {
+      position: relative;
+    }
+    .next-lesson-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #c9a84c;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .next-lesson-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .next-lesson-meta {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .next-lesson-meta strong {
+      color: rgba(255,255,255,0.8);
+      font-weight: 600;
+    }
+    .next-lesson-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      position: relative;
+    }
+    .next-lesson-timer {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .next-lesson-timer .timer-value {
+      font-weight: 700;
+      color: #c9a84c;
+      font-size: 0.85rem;
+    }
+    .join-btn {
+      padding: 12px 36px;
+      background: linear-gradient(135deg, #c9a84c, #d4b65e);
+      color: #0a1628;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: 12px;
+      transition: all 0.25s;
+      box-shadow: 0 4px 16px rgba(201,168,76,0.3);
+      letter-spacing: 0.01em;
+    }
+    .join-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(201,168,76,0.4);
+    }
+    .reschedule-link {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+      transition: color 0.2s;
+      font-weight: 500;
+    }
+    .reschedule-link:hover { color: rgba(255,255,255,0.7); }
+
+    /* ========== TWO COLUMN ========== */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 24px;
+    }
+
+    /* ========== SECTION TITLES ========== */
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title .see-all {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: #2d5bff;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .section-title .see-all:hover { opacity: 0.7; }
+
+    /* ========== RECENT LESSONS ========== */
+    .lesson-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .lesson-item {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border: 1px solid rgba(0,0,0,0.04);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      transition: all 0.2s;
+    }
+    .lesson-item:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .lesson-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .lesson-dot.completed { background: #10b981; }
+    .lesson-dot.upcoming { background: #2d5bff; }
+    .lesson-info { flex: 1; min-width: 0; }
+    .lesson-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .lesson-tutor {
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+    .lesson-date {
+      font-size: 0.7rem;
+      color: #9ca3af;
+      white-space: nowrap;
+      margin-right: 12px;
+    }
+    .lesson-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #c9a84c;
+      white-space: nowrap;
+    }
+    .lesson-rating svg {
+      width: 14px;
+      height: 14px;
+      fill: #c9a84c;
+    }
+
+    /* ========== HOMEWORK ========== */
+    .homework-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .homework-item {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border: 1px solid rgba(0,0,0,0.04);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      transition: all 0.2s;
+    }
+    .homework-item:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .hw-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .hw-icon.write { background: rgba(45,91,255,0.08); }
+    .hw-icon.record { background: rgba(16,185,129,0.08); }
+    .hw-info { flex: 1; min-width: 0; }
+    .hw-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin-bottom: 2px;
+    }
+    .hw-due {
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+    .hw-due.soon { color: #f59e0b; }
+    .hw-due.later { color: #6b7280; }
+
+    /* ========== PROGRESS RING ========== */
+    .progress-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 24px;
+      border: 1px solid rgba(0,0,0,0.04);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      margin-bottom: 20px;
+    }
+    .progress-ring-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .progress-ring {
+      width: 120px;
+      height: 120px;
+      position: relative;
+      margin-bottom: 12px;
+    }
+    .progress-ring svg {
+      width: 120px;
+      height: 120px;
+      transform: rotate(-90deg);
+    }
+    .progress-ring .bg-ring {
+      fill: none;
+      stroke: #e5e7eb;
+      stroke-width: 8;
+    }
+    .progress-ring .fg-ring {
+      fill: none;
+      stroke: url(#progressGradient);
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 314;
+      stroke-dashoffset: 69; /* 314 * (1 - 0.78) */
+      transition: stroke-dashoffset 1s ease;
+    }
+    .progress-ring .ring-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #1a1a2e;
+    }
+    .progress-goals {
+      font-size: 0.8rem;
+      color: #6b7280;
+      text-align: center;
+    }
+    .progress-goals strong { color: #1a1a2e; }
+
+    /* ========== BAR CHART ========== */
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 8px;
+      height: 80px;
+      padding-top: 8px;
+    }
+    .bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+    }
+    .bar {
+      width: 100%;
+      max-width: 28px;
+      border-radius: 6px 6px 4px 4px;
+      transition: all 0.3s;
+      min-height: 4px;
+    }
+    .bar:hover { opacity: 0.8; transform: scaleY(1.05); transform-origin: bottom; }
+    .bar.has-value { background: linear-gradient(180deg, #2d5bff, #5b7fff); }
+    .bar.empty { background: #e5e7eb; }
+    .bar-label {
+      font-size: 0.6rem;
+      color: #9ca3af;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    /* ========== QUICK ACTIONS ========== */
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .quick-action {
+      background: #fff;
+      border-radius: 12px;
+      padding: 18px 14px;
+      text-align: center;
+      border: 1px solid rgba(0,0,0,0.04);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      transition: all 0.25s;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #1a1a2e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .quick-action:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      border-color: rgba(45,91,255,0.15);
+    }
+    .quick-action .qa-icon {
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    /* ========== ACHIEVEMENTS ========== */
+    .achievements-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .achievement {
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid rgba(0,0,0,0.04);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      transition: all 0.2s;
+    }
+    .achievement:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .achievement-icon {
+      font-size: 1.3rem;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.05));
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+    .achievement-info { flex: 1; }
+    .achievement-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+    .achievement-date {
+      font-size: 0.65rem;
+      color: #9ca3af;
+    }
+
+    /* ========== MOBILE OVERLAY ========== */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 899;
+      backdrop-filter: blur(2px);
+    }
+    .sidebar-overlay.active { display: block; }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 1024px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .main-content {
+        margin-left: 0;
+      }
+      .mobile-toggle {
+        display: flex;
+      }
+      .topbar {
+        padding: 12px 16px;
+      }
+      .content {
+        padding: 20px 16px 40px;
+      }
+      .welcome h1 { font-size: 1.4rem; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .stat-card { padding: 16px; }
+      .stat-value { font-size: 1.4rem; }
+      .next-lesson {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 22px 20px;
+      }
+      .next-lesson-actions {
+        align-items: flex-start;
+        flex-direction: row-reverse;
+        gap: 16px;
+        width: 100%;
+      }
+      .join-btn { flex: 1; text-align: center; }
+      .book-lesson-btn span.full { display: none; }
+      .book-lesson-btn span.short { display: inline; }
+    }
+
+    @media (min-width: 769px) {
+      .book-lesson-btn span.short { display: none; }
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in {
+      animation: fadeInUp 0.5s ease forwards;
+    }
+    .animate-in:nth-child(1) { animation-delay: 0.05s; }
+    .animate-in:nth-child(2) { animation-delay: 0.1s; }
+    .animate-in:nth-child(3) { animation-delay: 0.15s; }
+    .animate-in:nth-child(4) { animation-delay: 0.2s; }
+
+    /* ========== SCROLLBAR ========== */
+    .sidebar-nav::-webkit-scrollbar { width: 4px; }
+    .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+    .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
+    .main-content::-webkit-scrollbar { width: 6px; }
+    .main-content::-webkit-scrollbar-track { background: transparent; }
+    .main-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 99px; }
+  </style>
+</head>
+<body>
+
+<!-- Preview Banner -->
+<div class="preview-banner">
+  ✨ This is a preview of the Soma Languages Student Portal — <a href="../index.html">Back to Proposal</a>
+</div>
+
+<!-- App Layout -->
+<div class="app-layout">
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">S</div>
+      <div class="logo-text">
+        <span>Soma Languages</span>
+        <span>Learn. Speak. Thrive.</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-label">Main Menu</div>
+
+      <a href="#" class="nav-item active">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </span>
+        Dashboard
+      </a>
+
+      <a href="#" class="nav-item">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </span>
+        My Lessons
+      </a>
+
+      <a href="#" class="nav-item">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </span>
+        AI Practice
+        <span class="nav-badge new">NEW</span>
+      </a>
+
+      <a href="#" class="nav-item">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+        </span>
+        Vocabulary
+      </a>
+
+      <a href="#" class="nav-item">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </span>
+        Progress
+      </a>
+
+      <a href="#" class="nav-item">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </span>
+        Messages
+        <span class="nav-badge count">3</span>
+      </a>
+
+      <a href="#" class="nav-item">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </span>
+        Homework
+      </a>
+    </nav>
+
+    <div class="sidebar-profile">
+      <div class="profile-avatar">SK</div>
+      <div class="profile-info">
+        <div class="profile-name">Sarah K.</div>
+        <div class="profile-plan">Premium Plan</div>
+      </div>
+      <button class="settings-btn" aria-label="Settings">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="mobile-toggle" onclick="toggleSidebar()" aria-label="Menu">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="search-bar">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search lessons, vocabulary...">
+      </div>
+      <div class="topbar-actions">
+        <button class="notif-btn" aria-label="Notifications">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+        <button class="book-lesson-btn">
+          <span class="full">Book a Lesson</span>
+          <span class="short">Book</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Welcome -->
+      <div class="welcome animate-in">
+        <h1>Good morning, Sarah! &#127775;</h1>
+        <p>You have a lesson in 2 hours. Keep up the great work!</p>
+        <div class="streak-badge">&#128293; 12 day streak</div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stats-row">
+        <div class="stat-card animate-in">
+          <div class="stat-label">Lessons Completed</div>
+          <div class="stat-value">24</div>
+          <div class="stat-sub">
+            <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+            +3 this week
+          </div>
+        </div>
+        <div class="stat-card animate-in">
+          <div class="stat-label">Hours Practiced</div>
+          <div class="stat-value">18.5</div>
+          <div class="stat-sub">
+            <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+            +4.2 hrs this week
+          </div>
+        </div>
+        <div class="stat-card animate-in">
+          <div class="stat-label">Vocabulary Mastered</div>
+          <div class="stat-value">342</div>
+          <div class="stat-sub">
+            <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+            +28 words this week
+          </div>
+        </div>
+        <div class="stat-card animate-in">
+          <div class="stat-label">Current Level</div>
+          <div class="stat-value">B2</div>
+          <div class="stat-level">Upper Intermediate</div>
+        </div>
+      </div>
+
+      <!-- Next Lesson -->
+      <div class="next-lesson animate-in">
+        <div class="next-lesson-info">
+          <div class="next-lesson-label">Next Lesson</div>
+          <div class="next-lesson-title">Business English — Email Writing</div>
+          <div class="next-lesson-meta">with <strong>Tina</strong> &bull; Today, 2:00 PM EAT</div>
+        </div>
+        <div class="next-lesson-actions">
+          <div class="next-lesson-timer">Starts in <span class="timer-value">1h 45m</span></div>
+          <button class="join-btn">Join Lesson</button>
+          <a href="#" class="reschedule-link">Reschedule</a>
+        </div>
+      </div>
+
+      <!-- Two Column Layout -->
+      <div class="two-col">
+
+        <!-- Left Column -->
+        <div>
+          <!-- Recent Lessons -->
+          <div class="section-title">
+            Recent Lessons
+            <a href="#" class="see-all">See all &rarr;</a>
+          </div>
+          <div class="lesson-list">
+            <div class="lesson-item">
+              <span class="lesson-dot completed"></span>
+              <div class="lesson-info">
+                <div class="lesson-name">Phone Conversations</div>
+                <div class="lesson-tutor">with Sarah</div>
+              </div>
+              <span class="lesson-date">Mar 22</span>
+              <span class="lesson-rating">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                4.8
+              </span>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-dot completed"></span>
+              <div class="lesson-info">
+                <div class="lesson-name">Job Interview Prep</div>
+                <div class="lesson-tutor">with Tina</div>
+              </div>
+              <span class="lesson-date">Mar 20</span>
+              <span class="lesson-rating">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                5.0
+              </span>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-dot completed"></span>
+              <div class="lesson-info">
+                <div class="lesson-name">Grammar: Conditionals</div>
+                <div class="lesson-tutor">with James</div>
+              </div>
+              <span class="lesson-date">Mar 18</span>
+              <span class="lesson-rating">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                4.5
+              </span>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-dot completed"></span>
+              <div class="lesson-info">
+                <div class="lesson-name">Business Small Talk</div>
+                <div class="lesson-tutor">with Tina</div>
+              </div>
+              <span class="lesson-date">Mar 15</span>
+              <span class="lesson-rating">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                4.7
+              </span>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-dot completed"></span>
+              <div class="lesson-info">
+                <div class="lesson-name">Pronunciation Drill</div>
+                <div class="lesson-tutor">with Lucy</div>
+              </div>
+              <span class="lesson-date">Mar 13</span>
+              <span class="lesson-rating">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                4.9
+              </span>
+            </div>
+          </div>
+
+          <!-- Homework Due -->
+          <div class="section-title">
+            Homework Due
+            <a href="#" class="see-all">View all &rarr;</a>
+          </div>
+          <div class="homework-list">
+            <div class="homework-item">
+              <div class="hw-icon write">&#9997;&#65039;</div>
+              <div class="hw-info">
+                <div class="hw-title">Write a formal email requesting time off</div>
+                <div class="hw-due soon">Due Mar 27 — 2 days left</div>
+              </div>
+            </div>
+            <div class="homework-item">
+              <div class="hw-icon record">&#127908;</div>
+              <div class="hw-info">
+                <div class="hw-title">Record 3 sentences with 'th' sound</div>
+                <div class="hw-due later">Due Mar 30</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div>
+          <!-- Weekly Progress -->
+          <div class="section-title">Weekly Progress</div>
+          <div class="progress-card">
+            <div class="progress-ring-container">
+              <div class="progress-ring">
+                <svg viewBox="0 0 120 120">
+                  <defs>
+                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#2d5bff"/>
+                      <stop offset="100%" stop-color="#10b981"/>
+                    </linearGradient>
+                  </defs>
+                  <circle class="bg-ring" cx="60" cy="60" r="50"/>
+                  <circle class="fg-ring" cx="60" cy="60" r="50"/>
+                </svg>
+                <div class="ring-text">78%</div>
+              </div>
+              <div class="progress-goals"><strong>7 of 9</strong> goals completed this week</div>
+            </div>
+            <div class="bar-chart">
+              <div class="bar-col">
+                <div class="bar has-value" style="height:33%"></div>
+                <span class="bar-label">M</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar has-value" style="height:40%"></div>
+                <span class="bar-label">T</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar empty" style="height:6%"></div>
+                <span class="bar-label">W</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar has-value" style="height:60%"></div>
+                <span class="bar-label">T</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar has-value" style="height:27%"></div>
+                <span class="bar-label">F</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar has-value" style="height:47%"></div>
+                <span class="bar-label">S</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar has-value" style="height:20%"></div>
+                <span class="bar-label">S</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="section-title">Quick Actions</div>
+          <div class="quick-actions-grid">
+            <button class="quick-action">
+              <span class="qa-icon">&#129302;</span>
+              Practice with AI
+            </button>
+            <button class="quick-action">
+              <span class="qa-icon">&#128197;</span>
+              Book Next Lesson
+            </button>
+            <button class="quick-action">
+              <span class="qa-icon">&#128218;</span>
+              Review Flashcards
+            </button>
+            <button class="quick-action">
+              <span class="qa-icon">&#128221;</span>
+              Submit Homework
+            </button>
+          </div>
+
+          <!-- Achievements -->
+          <div class="section-title">Achievements</div>
+          <div class="achievements-list">
+            <div class="achievement">
+              <div class="achievement-icon">&#127942;</div>
+              <div class="achievement-info">
+                <div class="achievement-name">10 Day Streak</div>
+                <div class="achievement-date">Earned Mar 23</div>
+              </div>
+            </div>
+            <div class="achievement">
+              <div class="achievement-icon">&#11088;</div>
+              <div class="achievement-info">
+                <div class="achievement-name">Perfect Score</div>
+                <div class="achievement-date">Earned Mar 20</div>
+              </div>
+            </div>
+            <div class="achievement">
+              <div class="achievement-icon">&#128214;</div>
+              <div class="achievement-info">
+                <div class="achievement-name">100 Words Mastered</div>
+                <div class="achievement-date">Earned Mar 15</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /two-col -->
+
+    </div><!-- /content -->
+  </main>
+</div><!-- /app-layout -->
+
+<script>
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+  }
+
+  // Close sidebar on resize to desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('active');
+    }
+  });
+
+  // Add subtle entrance animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.stat-card, .lesson-item, .achievement, .homework-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(12px)';
+    el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+    observer.observe(el);
+  });
+
+  // Stagger the animations
+  setTimeout(() => {
+    document.querySelectorAll('.stat-card').forEach((el, i) => {
+      setTimeout(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }, i * 80);
+    });
+    document.querySelectorAll('.lesson-item').forEach((el, i) => {
+      setTimeout(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }, 300 + i * 60);
+    });
+    document.querySelectorAll('.achievement, .homework-item').forEach((el, i) => {
+      setTimeout(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }, 400 + i * 80);
+    });
+  }, 100);
+</script>
+</body>
+</html>

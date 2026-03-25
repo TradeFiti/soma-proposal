@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soma Languages — Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --dark:#0a1628;--gold:#c9a84c;--blue:#2d5bff;--green:#10b981;--purple:#a855f7;
+  --red:#ef4444;--white:#ffffff;--light:#f8f9ff;--text:#1a1a2e;--muted:#6b7280;
+  --sidebar-w:260px;--header-h:64px;
+}
+html{font-size:16px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--light);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* ── Preview Banner ── */
+.preview-banner{background:linear-gradient(90deg,#0a1628,#162040);color:var(--gold);text-align:center;padding:8px;font-size:.75rem;font-weight:500;position:fixed;top:0;left:0;right:0;z-index:1000}
+.preview-banner a{color:#fff;text-decoration:underline}
+
+/* ── Sidebar ── */
+.sidebar{position:fixed;top:28px;left:0;bottom:0;width:var(--sidebar-w);background:var(--dark);display:flex;flex-direction:column;z-index:900;transition:width .3s cubic-bezier(.4,0,.2,1);overflow:hidden}
+.sidebar-header{padding:24px 20px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-logo{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#dbb85c);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:1.25rem;color:var(--dark);flex-shrink:0}
+.sidebar-brand{display:flex;flex-direction:column;gap:2px;overflow:hidden;white-space:nowrap}
+.sidebar-brand-name{color:var(--white);font-weight:600;font-size:.95rem;letter-spacing:-.01em}
+.admin-badge{display:inline-flex;align-items:center;background:rgba(201,168,76,.15);color:var(--gold);font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2px 8px;border-radius:4px;width:fit-content}
+
+.sidebar-nav{flex:1;padding:16px 12px;overflow-y:auto}
+.nav-section-label{color:rgba(255,255,255,.3);font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;padding:8px 12px 6px;overflow:hidden;white-space:nowrap}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.55);font-size:.85rem;font-weight:500;cursor:pointer;transition:all .2s;text-decoration:none;margin-bottom:2px;white-space:nowrap}
+.nav-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}
+.nav-item.active{background:rgba(201,168,76,.12);color:var(--gold)}
+.nav-item.active .nav-icon svg{stroke:var(--gold)}
+.nav-icon{width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.nav-icon svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nav-label{overflow:hidden;text-overflow:ellipsis}
+
+.nav-divider{height:1px;background:rgba(255,255,255,.06);margin:12px 12px}
+
+.nav-item.social-studio{background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(45,91,255,.12));border:1px solid rgba(168,85,247,.2);color:var(--purple)}
+.nav-item.social-studio:hover{background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(45,91,255,.2));color:#c084fc}
+.nav-item.social-studio .nav-icon svg{stroke:var(--purple)}
+
+.sidebar-profile{padding:16px 16px 20px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px;white-space:nowrap;overflow:hidden}
+.profile-avatar{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--gold),#dbb85c);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;color:var(--dark);flex-shrink:0}
+.profile-info{overflow:hidden}
+.profile-name{color:var(--white);font-weight:600;font-size:.85rem}
+.profile-role{color:rgba(255,255,255,.4);font-size:.7rem;display:flex;align-items:center;gap:4px}
+.role-badge{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green)}
+
+/* ── Main Content ── */
+.main{margin-left:var(--sidebar-w);padding-top:28px;min-height:100vh;transition:margin-left .3s cubic-bezier(.4,0,.2,1)}
+
+/* ── Header ── */
+.header{height:var(--header-h);background:var(--white);border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:28px;z-index:100}
+.header-left h1{font-size:1.15rem;font-weight:700;color:var(--text)}
+.header-left p{font-size:.8rem;color:var(--muted);margin-top:1px}
+.header-right{display:flex;align-items:center;gap:16px}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--light);border:1px solid rgba(0,0,0,.06);border-radius:8px;padding:8px 14px;font-size:.8rem;color:var(--muted);cursor:pointer;transition:all .2s}
+.search-box:hover{border-color:rgba(0,0,0,.12);background:#fff}
+.search-box svg{width:16px;height:16px;stroke:var(--muted);stroke-width:2;fill:none}
+.search-box span{white-space:nowrap}
+.search-shortcut{background:var(--white);border:1px solid rgba(0,0,0,.1);border-radius:4px;padding:1px 6px;font-size:.65rem;font-weight:600;color:var(--muted)}
+.notif-btn{position:relative;width:38px;height:38px;border-radius:8px;border:1px solid rgba(0,0,0,.06);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.notif-btn:hover{background:var(--light);border-color:rgba(0,0,0,.12)}
+.notif-btn svg{width:18px;height:18px;stroke:var(--muted);stroke-width:2;fill:none}
+.notif-badge{position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:var(--red);color:#fff;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.add-student-btn{display:flex;align-items:center;gap:6px;background:var(--blue);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.add-student-btn:hover{background:#1d4bef;transform:translateY(-1px);box-shadow:0 4px 12px rgba(45,91,255,.3)}
+.add-student-btn svg{width:16px;height:16px;stroke:#fff;stroke-width:2.5;fill:none}
+
+/* ── Content Area ── */
+.content{padding:24px 32px 48px}
+
+/* ── Alert Banner ── */
+.alert-banner{background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(16,185,129,.04));border:1px solid rgba(16,185,129,.15);border-radius:12px;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;animation:slideDown .4s ease}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.alert-banner-content{display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--text);font-weight:500}
+.alert-banner a{color:var(--green);font-weight:600;text-decoration:none;white-space:nowrap}
+.alert-banner a:hover{text-decoration:underline}
+.alert-dismiss{width:28px;height:28px;border-radius:6px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .2s;flex-shrink:0}
+.alert-dismiss:hover{background:rgba(0,0,0,.06)}
+.alert-dismiss svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none}
+
+/* ── KPI Cards ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:28px}
+.kpi-card{background:var(--white);border-radius:14px;padding:22px;border:1px solid rgba(0,0,0,.04);transition:all .3s cubic-bezier(.4,0,.2,1);cursor:default}
+.kpi-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.08);border-color:rgba(0,0,0,.06)}
+.kpi-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.kpi-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.kpi-icon svg{width:20px;height:20px;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.kpi-icon.revenue{background:rgba(16,185,129,.1)}
+.kpi-icon.revenue svg{stroke:var(--green)}
+.kpi-icon.students{background:rgba(45,91,255,.1)}
+.kpi-icon.students svg{stroke:var(--blue)}
+.kpi-icon.lessons{background:rgba(168,85,247,.1)}
+.kpi-icon.lessons svg{stroke:var(--purple)}
+.kpi-icon.rating{background:rgba(201,168,76,.1)}
+.kpi-icon.rating svg{stroke:var(--gold)}
+.kpi-change{display:inline-flex;align-items:center;gap:3px;font-size:.7rem;font-weight:600;padding:3px 8px;border-radius:20px}
+.kpi-change.up{background:rgba(16,185,129,.1);color:var(--green)}
+.kpi-change.neutral{background:rgba(107,114,128,.1);color:var(--muted)}
+.kpi-change svg{width:12px;height:12px;stroke:currentColor;stroke-width:2.5;fill:none}
+.kpi-value{font-size:1.85rem;font-weight:800;letter-spacing:-.02em;color:var(--text);line-height:1.1}
+.kpi-label{font-size:.8rem;color:var(--muted);margin-top:4px;font-weight:500}
+
+/* ── Two-Column Layout ── */
+.dashboard-grid{display:grid;grid-template-columns:1fr 380px;gap:24px}
+
+/* ── Cards ── */
+.card{background:var(--white);border-radius:14px;border:1px solid rgba(0,0,0,.04);overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1)}
+.card:hover{box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid rgba(0,0,0,.04)}
+.card-title{font-size:.95rem;font-weight:700;color:var(--text)}
+.card-action{font-size:.75rem;font-weight:600;color:var(--blue);cursor:pointer;text-decoration:none;transition:color .2s}
+.card-action:hover{color:#1d4bef}
+.card-body{padding:6px 22px 22px}
+
+/* ── Schedule Timeline ── */
+.schedule-list{list-style:none}
+.schedule-item{display:flex;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,.03);transition:background .2s;border-radius:6px;margin:0 -8px;padding-left:8px;padding-right:8px}
+.schedule-item:last-child{border-bottom:none}
+.schedule-item:hover{background:rgba(0,0,0,.015)}
+.schedule-time{font-size:.78rem;font-weight:600;color:var(--muted);width:64px;flex-shrink:0;white-space:nowrap}
+.schedule-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.schedule-dot.completed{background:var(--green)}
+.schedule-dot.in-progress{background:var(--blue);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(45,91,255,.4)}50%{box-shadow:0 0 0 6px rgba(45,91,255,0)}}
+.schedule-dot.upcoming{background:#d1d5db}
+.schedule-info{flex:1;min-width:0}
+.schedule-student{font-size:.85rem;font-weight:600;color:var(--text)}
+.schedule-meta{font-size:.73rem;color:var(--muted);display:flex;align-items:center;gap:6px;margin-top:2px}
+.schedule-tutor-avatar{width:18px;height:18px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;color:#fff;flex-shrink:0;vertical-align:middle}
+.schedule-topic{color:var(--muted);font-weight:500}
+.status-badge{font-size:.65rem;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.status-badge.completed{background:rgba(16,185,129,.1);color:var(--green)}
+.status-badge.in-progress{background:rgba(45,91,255,.1);color:var(--blue)}
+.status-badge.upcoming{background:rgba(107,114,128,.08);color:var(--muted)}
+
+/* ── Activity Feed ── */
+.activity-list{list-style:none}
+.activity-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,.03)}
+.activity-item:last-child{border-bottom:none}
+.activity-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;background:var(--light)}
+.activity-content{flex:1}
+.activity-text{font-size:.82rem;color:var(--text);line-height:1.4}
+.activity-text strong{font-weight:600}
+.activity-time{font-size:.7rem;color:var(--muted);margin-top:3px}
+
+/* ── Tutor Cards ── */
+.tutor-list{display:flex;flex-direction:column;gap:10px;padding-top:10px}
+.tutor-card{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,.04);transition:all .25s;cursor:default}
+.tutor-card:hover{border-color:rgba(0,0,0,.08);box-shadow:0 4px 12px rgba(0,0,0,.04);transform:translateY(-1px)}
+.tutor-avatar{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#fff;flex-shrink:0}
+.tutor-info{flex:1;min-width:0}
+.tutor-name{font-size:.85rem;font-weight:600;color:var(--text)}
+.tutor-stats{display:flex;gap:12px;margin-top:3px}
+.tutor-stat{font-size:.7rem;color:var(--muted)}
+.tutor-stat span{font-weight:600;color:var(--text)}
+.tutor-satisfaction{font-size:.8rem;font-weight:700;text-align:right;white-space:nowrap}
+
+/* ── Revenue Chart ── */
+.chart-container{padding:16px 0 6px}
+.chart-bars{display:flex;align-items:flex-end;gap:14px;height:120px;padding:0 4px}
+.chart-bar-wrapper{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%}
+.chart-bar-track{width:100%;flex:1;display:flex;align-items:flex-end;justify-content:center}
+.chart-bar{width:100%;border-radius:6px 6px 2px 2px;transition:height .6s cubic-bezier(.4,0,.2,1);position:relative;min-height:4px}
+.chart-bar.filled{background:linear-gradient(180deg,var(--blue),#4a78ff)}
+.chart-bar.projected{background:transparent;border:2px dashed rgba(45,91,255,.35)}
+.chart-bar-value{font-size:.65rem;font-weight:600;color:var(--text);position:absolute;top:-20px;left:50%;transform:translateX(-50%);white-space:nowrap}
+.chart-bar-label{font-size:.68rem;color:var(--muted);font-weight:500;white-space:nowrap}
+.chart-total{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06)}
+.chart-total-label{font-size:.8rem;color:var(--muted);font-weight:500}
+.chart-total-value{font-size:1.15rem;font-weight:800;color:var(--text)}
+
+/* ── Quick Actions ── */
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:10px}
+.quick-action-btn{display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:10px;border:1px solid rgba(0,0,0,.06);background:var(--white);font-size:.8rem;font-weight:500;color:var(--text);cursor:pointer;transition:all .2s;font-family:inherit;text-align:left}
+.quick-action-btn:hover{background:var(--light);border-color:rgba(0,0,0,.1);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.quick-action-btn .qa-icon{font-size:1rem}
+
+/* ── Responsive: Tablet ── */
+@media(max-width:1200px){
+  .dashboard-grid{grid-template-columns:1fr;gap:20px}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:1024px){
+  :root{--sidebar-w:68px}
+  .sidebar-brand,.nav-label,.admin-badge,.profile-info,.nav-section-label{display:none!important}
+  .sidebar-header{padding:20px 14px;justify-content:center}
+  .sidebar-nav{padding:12px 10px}
+  .nav-item{justify-content:center;padding:10px}
+  .sidebar-profile{justify-content:center;padding:12px 10px 16px}
+  .nav-divider{margin:10px 6px}
+  .header{padding:0 20px}
+  .content{padding:20px}
+  .search-box span,.search-shortcut{display:none}
+}
+@media(max-width:768px){
+  :root{--sidebar-w:0px}
+  .sidebar{transform:translateX(-100%)}
+  .main{margin-left:0}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .header{padding:0 16px}
+  .content{padding:16px}
+}
+@media(max-width:480px){
+  .kpi-grid{grid-template-columns:1fr}
+  .quick-actions{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Preview Banner -->
+<div class="preview-banner">
+  ✨ This is a preview of the Soma Admin Dashboard — <a href="../index.html">Back to Proposal</a>
+</div>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">S</div>
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-name">Soma Languages</div>
+      <div class="admin-badge">Admin</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+
+    <a href="#" class="nav-item active">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+      <span class="nav-label">Overview</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+      <span class="nav-label">Students</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      <span class="nav-label">Tutors</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+      <span class="nav-label">Schedule</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+      <span class="nav-label">Revenue</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+      <span class="nav-label">Marketing</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
+      <span class="nav-label">Content</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+      <span class="nav-label">Settings</span>
+    </a>
+
+    <div class="nav-divider"></div>
+
+    <a href="../social-studio.html" class="nav-item social-studio">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z" fill="rgba(168,85,247,0.15)" stroke="var(--purple)"/></svg></span>
+      <span class="nav-label">Social Studio</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-profile">
+    <div class="profile-avatar">T</div>
+    <div class="profile-info">
+      <div class="profile-name">Tina</div>
+      <div class="profile-role"><span class="role-badge"></span> Owner</div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<div class="main">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <h1>Welcome back, Tina</h1>
+      <p>Tuesday, March 25, 2026</p>
+    </div>
+    <div class="header-right">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Search...</span>
+        <span class="search-shortcut">&#8984;K</span>
+      </div>
+      <button class="notif-btn">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="notif-badge">3</span>
+      </button>
+      <button class="add-student-btn">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Student
+      </button>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <div class="content">
+    <!-- Alert Banner -->
+    <div class="alert-banner" id="alertBanner">
+      <div class="alert-banner-content">
+        <span>📈</span>
+        <span>Your revenue is up <strong>23% this month</strong>!</span>
+        <a href="analytics.html">View report &rarr;</a>
+      </div>
+      <button class="alert-dismiss" onclick="document.getElementById('alertBanner').style.display='none'">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <!-- Revenue -->
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-icon revenue">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="kpi-change up">
+            <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+            +23%
+          </div>
+        </div>
+        <div class="kpi-value">$8,420</div>
+        <div class="kpi-label">Monthly Revenue</div>
+      </div>
+      <!-- Students -->
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-icon students">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="kpi-change up">
+            <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+            +12
+          </div>
+        </div>
+        <div class="kpi-value">67</div>
+        <div class="kpi-label">Active Students</div>
+      </div>
+      <!-- Lessons -->
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-icon lessons">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="kpi-change neutral">
+            On track
+          </div>
+        </div>
+        <div class="kpi-value">48</div>
+        <div class="kpi-label">Lessons This Week</div>
+      </div>
+      <!-- Rating -->
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-icon rating">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="rgba(201,168,76,0.2)"/></svg>
+          </div>
+          <div class="kpi-change up">
+            <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+            +0.2
+          </div>
+        </div>
+        <div class="kpi-value">4.8<span style="font-size:1rem;font-weight:600;color:var(--muted)">/5</span></div>
+        <div class="kpi-label">Avg Satisfaction</div>
+      </div>
+    </div>
+
+    <!-- Two-Column Layout -->
+    <div class="dashboard-grid">
+      <!-- Left Column -->
+      <div class="left-column">
+        <!-- Today's Schedule -->
+        <div class="card" style="margin-bottom:24px">
+          <div class="card-header">
+            <div class="card-title">Today's Schedule</div>
+            <a href="#" class="card-action">View Full Calendar</a>
+          </div>
+          <div class="card-body">
+            <ul class="schedule-list">
+              <!-- 8:00 AM -->
+              <li class="schedule-item">
+                <span class="schedule-time">8:00 AM</span>
+                <span class="schedule-dot completed"></span>
+                <div class="schedule-info">
+                  <div class="schedule-student">Sarah K.</div>
+                  <div class="schedule-meta">
+                    <span class="schedule-tutor-avatar" style="background:linear-gradient(135deg,var(--gold),#dbb85c)">T</span>
+                    <span class="schedule-topic">Tina &middot; Business English</span>
+                  </div>
+                </div>
+                <span class="status-badge completed">&#10003; Completed</span>
+              </li>
+              <!-- 9:30 AM -->
+              <li class="schedule-item">
+                <span class="schedule-time">9:30 AM</span>
+                <span class="schedule-dot completed"></span>
+                <div class="schedule-info">
+                  <div class="schedule-student">Ahmed R.</div>
+                  <div class="schedule-meta">
+                    <span class="schedule-tutor-avatar" style="background:var(--blue)">S</span>
+                    <span class="schedule-topic">Sarah &middot; Interview Prep</span>
+                  </div>
+                </div>
+                <span class="status-badge completed">&#10003; Completed</span>
+              </li>
+              <!-- 10:00 AM -->
+              <li class="schedule-item">
+                <span class="schedule-time">10:00 AM</span>
+                <span class="schedule-dot in-progress"></span>
+                <div class="schedule-info">
+                  <div class="schedule-student">Maria L.</div>
+                  <div class="schedule-meta">
+                    <span class="schedule-tutor-avatar" style="background:var(--green)">J</span>
+                    <span class="schedule-topic">James &middot; Pronunciation</span>
+                  </div>
+                </div>
+                <span class="status-badge in-progress">&#9679; In Progress</span>
+              </li>
+              <!-- 11:30 AM -->
+              <li class="schedule-item">
+                <span class="schedule-time">11:30 AM</span>
+                <span class="schedule-dot upcoming"></span>
+                <div class="schedule-info">
+                  <div class="schedule-student">David W.</div>
+                  <div class="schedule-meta">
+                    <span class="schedule-tutor-avatar" style="background:linear-gradient(135deg,var(--gold),#dbb85c)">T</span>
+                    <span class="schedule-topic">Tina &middot; Grammar Review</span>
+                  </div>
+                </div>
+                <span class="status-badge upcoming">&#9203; Upcoming</span>
+              </li>
+              <!-- 1:00 PM -->
+              <li class="schedule-item">
+                <span class="schedule-time">1:00 PM</span>
+                <span class="schedule-dot upcoming"></span>
+                <div class="schedule-info">
+                  <div class="schedule-student">Lisa M.</div>
+                  <div class="schedule-meta">
+                    <span class="schedule-tutor-avatar" style="background:var(--purple)">L</span>
+                    <span class="schedule-topic">Lucy &middot; Conversation</span>
+                  </div>
+                </div>
+                <span class="status-badge upcoming">&#9203; Upcoming</span>
+              </li>
+              <!-- 2:00 PM -->
+              <li class="schedule-item">
+                <span class="schedule-time">2:00 PM</span>
+                <span class="schedule-dot upcoming"></span>
+                <div class="schedule-info">
+                  <div class="schedule-student">James O.</div>
+                  <div class="schedule-meta">
+                    <span class="schedule-tutor-avatar" style="background:linear-gradient(135deg,var(--gold),#dbb85c)">T</span>
+                    <span class="schedule-topic">Tina &middot; Business Writing</span>
+                  </div>
+                </div>
+                <span class="status-badge upcoming">&#9203; Upcoming</span>
+              </li>
+              <!-- 3:30 PM -->
+              <li class="schedule-item">
+                <span class="schedule-time">3:30 PM</span>
+                <span class="schedule-dot upcoming"></span>
+                <div class="schedule-info">
+                  <div class="schedule-student">Anna K.</div>
+                  <div class="schedule-meta">
+                    <span class="schedule-tutor-avatar" style="background:var(--blue)">S</span>
+                    <span class="schedule-topic">Sarah &middot; IELTS Prep</span>
+                  </div>
+                </div>
+                <span class="status-badge upcoming">&#9203; Upcoming</span>
+              </li>
+              <!-- 5:00 PM -->
+              <li class="schedule-item">
+                <span class="schedule-time">5:00 PM</span>
+                <span class="schedule-dot upcoming"></span>
+                <div class="schedule-info">
+                  <div class="schedule-student">Chen W.</div>
+                  <div class="schedule-meta">
+                    <span class="schedule-tutor-avatar" style="background:var(--green)">J</span>
+                    <span class="schedule-topic">James &middot; Pronunciation</span>
+                  </div>
+                </div>
+                <span class="status-badge upcoming">&#9203; Upcoming</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Recent Activity Feed -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Recent Activity</div>
+            <a href="#" class="card-action">View All</a>
+          </div>
+          <div class="card-body">
+            <ul class="activity-list">
+              <li class="activity-item">
+                <div class="activity-icon" style="background:rgba(45,91,255,.08)">🆕</div>
+                <div class="activity-content">
+                  <div class="activity-text">New student enrolled: <strong>Michael T.</strong></div>
+                  <div class="activity-time">2 hours ago</div>
+                </div>
+              </li>
+              <li class="activity-item">
+                <div class="activity-icon" style="background:rgba(16,185,129,.08)">💳</div>
+                <div class="activity-content">
+                  <div class="activity-text">Payment received: <strong>$45</strong> from Sarah K.</div>
+                  <div class="activity-time">3 hours ago</div>
+                </div>
+              </li>
+              <li class="activity-item">
+                <div class="activity-icon" style="background:rgba(201,168,76,.08)">⭐</div>
+                <div class="activity-content">
+                  <div class="activity-text">New <strong>5-star review</strong> from Ahmed R.</div>
+                  <div class="activity-time">5 hours ago</div>
+                </div>
+              </li>
+              <li class="activity-item">
+                <div class="activity-icon" style="background:rgba(168,85,247,.08)">📝</div>
+                <div class="activity-content">
+                  <div class="activity-text">Homework submitted by <strong>Lisa M.</strong></div>
+                  <div class="activity-time">Yesterday</div>
+                </div>
+              </li>
+              <li class="activity-item">
+                <div class="activity-icon" style="background:rgba(107,114,128,.08)">🤖</div>
+                <div class="activity-content">
+                  <div class="activity-text">AI Practice: <strong>Maria L.</strong> completed 45 min session</div>
+                  <div class="activity-time">Yesterday</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-column">
+        <!-- Tutor Performance -->
+        <div class="card" style="margin-bottom:24px">
+          <div class="card-header">
+            <div class="card-title">Tutor Performance</div>
+            <a href="#" class="card-action">Manage</a>
+          </div>
+          <div class="card-body">
+            <div class="tutor-list">
+              <!-- Tina -->
+              <div class="tutor-card">
+                <div class="tutor-avatar" style="background:linear-gradient(135deg,var(--gold),#dbb85c);color:var(--dark)">T</div>
+                <div class="tutor-info">
+                  <div class="tutor-name">Tina</div>
+                  <div class="tutor-stats">
+                    <span class="tutor-stat"><span>18</span> students</span>
+                    <span class="tutor-stat"><span>12</span> lessons/wk</span>
+                  </div>
+                </div>
+                <div class="tutor-satisfaction" style="color:var(--gold)">96%</div>
+              </div>
+              <!-- Sarah -->
+              <div class="tutor-card">
+                <div class="tutor-avatar" style="background:var(--blue)">S</div>
+                <div class="tutor-info">
+                  <div class="tutor-name">Sarah</div>
+                  <div class="tutor-stats">
+                    <span class="tutor-stat"><span>14</span> students</span>
+                    <span class="tutor-stat"><span>10</span> lessons/wk</span>
+                  </div>
+                </div>
+                <div class="tutor-satisfaction" style="color:var(--blue)">91%</div>
+              </div>
+              <!-- James -->
+              <div class="tutor-card">
+                <div class="tutor-avatar" style="background:var(--green)">J</div>
+                <div class="tutor-info">
+                  <div class="tutor-name">James</div>
+                  <div class="tutor-stats">
+                    <span class="tutor-stat"><span>11</span> students</span>
+                    <span class="tutor-stat"><span>9</span> lessons/wk</span>
+                  </div>
+                </div>
+                <div class="tutor-satisfaction" style="color:var(--green)">88%</div>
+              </div>
+              <!-- Lucy -->
+              <div class="tutor-card">
+                <div class="tutor-avatar" style="background:var(--purple)">L</div>
+                <div class="tutor-info">
+                  <div class="tutor-name">Lucy</div>
+                  <div class="tutor-stats">
+                    <span class="tutor-stat"><span>8</span> students</span>
+                    <span class="tutor-stat"><span>7</span> lessons/wk</span>
+                  </div>
+                </div>
+                <div class="tutor-satisfaction" style="color:var(--purple)">93%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Revenue Chart -->
+        <div class="card" style="margin-bottom:24px">
+          <div class="card-header">
+            <div class="card-title">Revenue This Month</div>
+            <a href="#" class="card-action">Details</a>
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <div class="chart-bars">
+                <div class="chart-bar-wrapper">
+                  <div class="chart-bar-track">
+                    <div class="chart-bar filled" style="height:74%">
+                      <span class="chart-bar-value">$1,800</span>
+                    </div>
+                  </div>
+                  <div class="chart-bar-label">Wk 1</div>
+                </div>
+                <div class="chart-bar-wrapper">
+                  <div class="chart-bar-track">
+                    <div class="chart-bar filled" style="height:87%">
+                      <span class="chart-bar-value">$2,100</span>
+                    </div>
+                  </div>
+                  <div class="chart-bar-label">Wk 2</div>
+                </div>
+                <div class="chart-bar-wrapper">
+                  <div class="chart-bar-track">
+                    <div class="chart-bar filled" style="height:100%">
+                      <span class="chart-bar-value">$2,420</span>
+                    </div>
+                  </div>
+                  <div class="chart-bar-label">Wk 3</div>
+                </div>
+                <div class="chart-bar-wrapper">
+                  <div class="chart-bar-track">
+                    <div class="chart-bar projected" style="height:87%">
+                      <span class="chart-bar-value" style="color:var(--muted)">$2,100</span>
+                    </div>
+                  </div>
+                  <div class="chart-bar-label">Wk 4</div>
+                </div>
+              </div>
+              <div class="chart-total">
+                <span class="chart-total-label">Total this month</span>
+                <span class="chart-total-value">$8,420</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Quick Actions</div>
+          </div>
+          <div class="card-body">
+            <div class="quick-actions">
+              <button class="quick-action-btn">
+                <span class="qa-icon">📧</span> Send Newsletter
+              </button>
+              <button class="quick-action-btn">
+                <span class="qa-icon">📊</span> Export Report
+              </button>
+              <button class="quick-action-btn">
+                <span class="qa-icon">👤</span> Add Tutor
+              </button>
+              <button class="quick-action-btn">
+                <span class="qa-icon">⚙️</span> System Settings
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

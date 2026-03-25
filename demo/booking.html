@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Lesson — Soma Languages</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --dark:#0a1628;--gold:#c9a84c;--blue:#2d5bff;--green:#10b981;
+  --white:#ffffff;--light:#f8f9ff;--text:#1a1a2e;--muted:#6b7280;
+  --gold-light:rgba(201,168,76,.12);--gold-glow:rgba(201,168,76,.25);
+  --shadow-sm:0 1px 3px rgba(0,0,0,.06);
+  --shadow-md:0 4px 16px rgba(0,0,0,.08);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.1);
+  --radius:12px;--radius-sm:8px;--radius-lg:16px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--light);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* Preview Banner */
+.preview-banner{background:linear-gradient(90deg,#0a1628,#162040);color:#c9a84c;text-align:center;padding:8px;font-size:.75rem;font-weight:500}
+.preview-banner a{color:#fff;text-decoration:underline;transition:opacity .2s}
+.preview-banner a:hover{opacity:.8}
+
+/* Nav */
+.nav{background:var(--white);box-shadow:0 1px 8px rgba(0,0,0,.06);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:64px}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),#d4b85c);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:var(--white);font-size:18px;box-shadow:0 2px 8px rgba(201,168,76,.3)}
+.nav-logo-text{font-family:'Playfair Display',serif;font-weight:600;font-size:18px;color:var(--dark)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:.875rem;font-weight:500;padding:20px 0;position:relative;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.active{color:var(--gold);font-weight:600}
+.nav-links a.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2.5px;background:var(--gold);border-radius:2px}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-bell{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:background .2s;background:transparent;border:none;font-size:1.1rem}
+.nav-bell:hover{background:var(--light)}
+.nav-bell-dot{width:7px;height:7px;background:#ef4444;border-radius:50%;position:absolute;top:6px;right:7px;border:2px solid var(--white)}
+.nav-user{display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 8px 4px 4px;border-radius:24px;transition:background .2s}
+.nav-user:hover{background:var(--light)}
+.nav-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#5b7fff);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600}
+.nav-username{font-size:.875rem;font-weight:500;color:var(--text)}
+
+/* Main Layout */
+.main{max-width:1000px;margin:0 auto;padding:32px 24px 80px}
+
+/* Step Indicator */
+.steps{display:flex;align-items:center;justify-content:center;margin-bottom:40px;position:relative}
+.step{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+.step-circle{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:600;transition:all .3s}
+.step-completed .step-circle{background:var(--green);color:var(--white)}
+.step-active .step-circle{background:var(--gold);color:var(--white);box-shadow:0 0 0 4px var(--gold-glow)}
+.step-upcoming .step-circle{background:#e5e7eb;color:var(--muted)}
+.step-label{font-size:.85rem;font-weight:500;color:var(--muted)}
+.step-active .step-label{color:var(--text);font-weight:600}
+.step-completed .step-label{color:var(--green)}
+.step-connector{width:80px;height:2px;background:#e5e7eb;margin:0 16px}
+.step-connector.done{background:var(--green)}
+
+/* Sections */
+.section{margin-bottom:24px}
+.section-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--white);border-radius:var(--radius) var(--radius) 0 0;border:1px solid #e8eaf0;cursor:pointer;transition:background .2s}
+.section-header:hover{background:#fafbff}
+.section-header h2{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:600;display:flex;align-items:center;gap:10px}
+.section-body{background:var(--white);border:1px solid #e8eaf0;border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:24px;overflow:hidden;transition:max-height .4s ease}
+.section.collapsed .section-body{max-height:0;padding:0 24px;border:none}
+.section.collapsed .section-header{border-radius:var(--radius)}
+.section-check{color:var(--green);font-weight:700}
+
+/* Selected Tutor Compact */
+.selected-tutor-compact{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--gold-light);border:1px solid var(--gold);border-radius:var(--radius-sm)}
+.selected-tutor-compact .avatar-sm{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#d4b85c);display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:.9rem}
+.selected-tutor-compact .name{font-weight:600;font-size:.9rem}
+.selected-tutor-compact .tag{font-size:.7rem;background:var(--gold);color:var(--white);padding:2px 8px;border-radius:20px;font-weight:600}
+
+/* Tutor Info Card */
+.tutor-card{display:flex;gap:24px;padding:24px;background:linear-gradient(135deg,#fefcf6,#fffdf7);border:1px solid #ede8d8;border-radius:var(--radius);margin-bottom:28px}
+.tutor-avatar-lg{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#d4b85c);display:flex;align-items:center;justify-content:center;color:var(--white);font-family:'Playfair Display',serif;font-weight:700;font-size:2rem;flex-shrink:0;box-shadow:0 4px 16px rgba(201,168,76,.3)}
+.tutor-info{flex:1}
+.tutor-name-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.tutor-name{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;color:var(--dark)}
+.tutor-badge{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;background:linear-gradient(135deg,var(--gold),#d4b85c);color:var(--white);padding:3px 10px;border-radius:20px}
+.tutor-rating{display:flex;align-items:center;gap:6px;font-size:.85rem;margin-bottom:8px}
+.tutor-rating .stars{color:#f59e0b}
+.tutor-rating .score{font-weight:600;color:var(--text)}
+.tutor-rating .count{color:var(--muted)}
+.tutor-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.tutor-tag{font-size:.7rem;padding:4px 10px;background:var(--light);border:1px solid #e8eaf0;border-radius:20px;color:var(--text);font-weight:500}
+.tutor-tag.lang{background:#eff6ff;border-color:#bfdbfe;color:var(--blue)}
+.tutor-bio{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+/* Lesson Type Selector */
+.lesson-types-label{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.lesson-types{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:32px}
+.lesson-card{padding:18px 16px;border:2px solid #e8eaf0;border-radius:var(--radius);cursor:pointer;transition:all .25s ease;text-align:center;position:relative;background:var(--white)}
+.lesson-card:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(201,168,76,.12);transform:translateY(-2px)}
+.lesson-card.selected{border-color:var(--gold);background:var(--gold-light);box-shadow:0 4px 20px rgba(201,168,76,.18)}
+.lesson-card.selected::after{content:'';position:absolute;top:10px;right:10px;width:20px;height:20px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M13.485 1.929a.75.75 0 0 1 .086 1.057l-7.25 8.5a.75.75 0 0 1-1.1.043l-3.25-3.25a.75.75 0 1 1 1.06-1.06l2.68 2.68L12.428 2.015a.75.75 0 0 1 1.057-.086z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+.lesson-icon{font-size:1.5rem;margin-bottom:8px}
+.lesson-name{font-weight:600;font-size:.85rem;color:var(--text);margin-bottom:2px}
+.lesson-dur{font-size:.75rem;color:var(--muted);margin-bottom:8px}
+.lesson-price{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--dark)}
+
+/* Calendar */
+.calendar-label{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:12px}
+.calendar{border:1px solid #e8eaf0;border-radius:var(--radius);overflow:hidden;margin-bottom:28px;background:var(--white)}
+.calendar-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--white)}
+.calendar-month{font-family:'Playfair Display',serif;font-weight:600;font-size:1.05rem}
+.calendar-nav{width:32px;height:32px;border:1px solid #e8eaf0;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--white);transition:all .2s;font-size:.85rem;color:var(--text)}
+.calendar-nav:hover{background:var(--light);border-color:var(--gold)}
+.calendar-weekdays{display:grid;grid-template-columns:repeat(7,1fr);padding:0 12px;border-bottom:1px solid #f0f1f5}
+.calendar-weekday{text-align:center;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:8px 0}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);padding:8px 12px 12px;gap:2px}
+.calendar-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:500;border-radius:50%;cursor:pointer;position:relative;transition:all .2s;color:var(--text)}
+.calendar-day:hover:not(.past):not(.empty){background:var(--gold-light)}
+.calendar-day.past{color:#d1d5db;cursor:default}
+.calendar-day.today{box-shadow:inset 0 0 0 2px var(--blue);font-weight:700;color:var(--blue)}
+.calendar-day.selected{background:var(--gold)!important;color:var(--white)!important;font-weight:700;box-shadow:0 2px 8px rgba(201,168,76,.35)}
+.calendar-day.empty{cursor:default}
+.calendar-day .dot{position:absolute;bottom:3px;width:5px;height:5px;border-radius:50%}
+.calendar-day .dot.green{background:var(--green)}
+.calendar-day .dot.yellow{background:#f59e0b}
+.calendar-day.selected .dot{background:var(--white)}
+.calendar-legend{display:flex;gap:16px;padding:8px 20px 14px;justify-content:center;border-top:1px solid #f0f1f5}
+.calendar-legend span{display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--muted)}
+.calendar-legend .leg-dot{width:6px;height:6px;border-radius:50%}
+.calendar-legend .leg-dot.g{background:var(--green)}
+.calendar-legend .leg-dot.y{background:#f59e0b}
+.calendar-legend .leg-dot.b{width:8px;height:8px;border:2px solid var(--blue);background:transparent;border-radius:50%}
+
+/* Time Slots */
+.time-label{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:12px}
+.time-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.time-slot{padding:12px 8px;text-align:center;border:2px solid #e8eaf0;border-radius:var(--radius-sm);cursor:pointer;transition:all .25s ease;font-size:.85rem;font-weight:500;background:var(--white);position:relative}
+.time-slot:hover:not(.booked){border-color:var(--gold);transform:translateY(-1px);box-shadow:0 2px 8px rgba(201,168,76,.1)}
+.time-slot.available{border-color:#bbf7d0}
+.time-slot.available:hover{border-color:var(--green);background:#f0fdf4}
+.time-slot.selected{background:var(--gold)!important;border-color:var(--gold)!important;color:var(--white)!important;font-weight:700;box-shadow:0 4px 12px rgba(201,168,76,.3)}
+.time-slot.booked{background:#f9fafb;border-color:#f3f4f6;color:#d1d5db;cursor:not-allowed;text-decoration:line-through}
+.time-slot.limited{border-color:#fcd34d;background:#fffbeb}
+.time-slot .slot-label{display:block;font-size:.6rem;font-weight:600;color:#f59e0b;margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+.time-slot.selected .slot-label{color:var(--white)}
+.timezone-note{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--muted);margin-top:4px;margin-bottom:0}
+.timezone-note svg{flex-shrink:0}
+
+/* Content Layout - 2 columns for summary */
+.content-layout{display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start}
+.content-main{min-width:0}
+
+/* Booking Summary */
+.booking-summary{position:sticky;top:88px;background:var(--white);border:1px solid #e8eaf0;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);overflow:hidden}
+.summary-header{padding:18px 20px;background:linear-gradient(135deg,var(--dark),#162040);color:var(--white)}
+.summary-header h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:600}
+.summary-body{padding:20px}
+.summary-row{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f3f4f6}
+.summary-row:last-of-type{border-bottom:none}
+.summary-label{font-size:.78rem;color:var(--muted);font-weight:500}
+.summary-value{font-size:.85rem;font-weight:600;color:var(--text);text-align:right}
+.summary-total{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0;border-top:2px solid var(--gold-light);margin-top:4px}
+.summary-total .label{font-weight:600;color:var(--text)}
+.summary-total .price{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--gold)}
+.btn-confirm{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),#d4b85c);border:none;border-radius:var(--radius-sm);color:var(--white);font-size:.95rem;font-weight:700;cursor:pointer;transition:all .3s;margin-top:16px;box-shadow:0 4px 16px rgba(201,168,76,.3);font-family:'Inter',sans-serif;position:relative;overflow:hidden}
+.btn-confirm:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(201,168,76,.4)}
+.btn-confirm:active{transform:translateY(0)}
+.btn-confirm.booked{background:var(--green);box-shadow:0 4px 16px rgba(16,185,129,.3)}
+.btn-confirm .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.4);transform:scale(0);animation:ripple-effect .6s ease-out}
+@keyframes ripple-effect{to{transform:scale(4);opacity:0}}
+.summary-note{text-align:center;font-size:.72rem;color:var(--muted);margin-top:12px;line-height:1.5}
+.summary-features{display:flex;flex-direction:column;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid #f3f4f6}
+.summary-feature{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--muted)}
+.summary-feature svg{flex-shrink:0;color:var(--green)}
+
+/* Cancellation */
+.cancellation{display:flex;align-items:flex-start;gap:10px;padding:14px 18px;background:#fffbeb;border:1px solid #fef3c7;border-radius:var(--radius-sm);margin-top:16px;font-size:.78rem;color:#92400e;line-height:1.5}
+.cancellation svg{flex-shrink:0;margin-top:1px}
+
+/* Responsive */
+@media(max-width:860px){
+  .content-layout{grid-template-columns:1fr}
+  .booking-summary{position:static}
+  .lesson-types{grid-template-columns:1fr 1fr 1fr}
+  .time-slots{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:640px){
+  .nav-links{display:none}
+  .lesson-types{grid-template-columns:1fr}
+  .time-slots{grid-template-columns:repeat(2,1fr)}
+  .tutor-card{flex-direction:column;align-items:center;text-align:center}
+  .tutor-tags{justify-content:center}
+  .steps{gap:0}
+  .step-label{font-size:.7rem}
+  .step-connector{width:40px}
+}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.section{animation:fadeUp .5s ease both}
+.section:nth-child(2){animation-delay:.1s}
+.section:nth-child(3){animation-delay:.2s}
+@keyframes pulse-gold{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,.4)}70%{box-shadow:0 0 0 8px rgba(201,168,76,0)}}
+@keyframes check-pop{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.btn-confirm.booked{animation:check-pop .4s ease}
+</style>
+</head>
+<body>
+
+<!-- Preview Banner -->
+<div class="preview-banner">
+  &#10024; This is a preview of the Soma Booking System — <a href="../index.html">Back to Proposal</a>
+</div>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon">S</div>
+      <span class="nav-logo-text">Soma Languages</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">My Lessons</a></li>
+      <li><a href="#" class="active">Book</a></li>
+      <li><a href="#">AI Practice</a></li>
+      <li><a href="#">Profile</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="nav-bell" aria-label="Notifications">
+        <span>&#128276;</span>
+        <span class="nav-bell-dot"></span>
+      </button>
+      <div class="nav-user">
+        <div class="nav-avatar">SK</div>
+        <span class="nav-username">Sarah K.</span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main">
+
+  <!-- Step Indicator -->
+  <div class="steps">
+    <div class="step step-completed">
+      <div class="step-circle">&#10003;</div>
+      <span class="step-label">Choose Tutor</span>
+    </div>
+    <div class="step-connector done"></div>
+    <div class="step step-active">
+      <div class="step-circle">2</div>
+      <span class="step-label">Select Date &amp; Time</span>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step step-upcoming">
+      <div class="step-circle">3</div>
+      <span class="step-label">Confirm Booking</span>
+    </div>
+  </div>
+
+  <!-- Section 1: Choose Tutor (collapsed) -->
+  <div class="section collapsed" id="section-tutor">
+    <div class="section-header" onclick="toggleSection('section-tutor')">
+      <h2><span class="section-check">&#10003;</span> Choose Your Tutor</h2>
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="selected-tutor-compact">
+        <div class="avatar-sm">T</div>
+        <div>
+          <span class="name">Tina</span>
+          <span class="tag">Lead Tutor</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Select Date & Time (expanded) -->
+  <div class="section" id="section-datetime">
+    <div class="section-header">
+      <h2><span style="color:var(--gold)">&#9679;</span> Select Date &amp; Time</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="content-layout">
+        <div class="content-main">
+
+          <!-- Tutor Info Card -->
+          <div class="tutor-card">
+            <div class="tutor-avatar-lg">T</div>
+            <div class="tutor-info">
+              <div class="tutor-name-row">
+                <span class="tutor-name">Tina</span>
+                <span class="tutor-badge">Lead Tutor</span>
+              </div>
+              <div class="tutor-rating">
+                <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                <span class="score">4.9</span>
+                <span class="count">(127 reviews)</span>
+              </div>
+              <div class="tutor-tags">
+                <span class="tutor-tag lang">English</span>
+                <span class="tutor-tag lang">Swahili</span>
+                <span class="tutor-tag">Business English</span>
+                <span class="tutor-tag">Interview Prep</span>
+                <span class="tutor-tag">Pronunciation</span>
+              </div>
+              <p class="tutor-bio">8+ years of teaching experience. Specializes in helping professionals sound confident in English.</p>
+            </div>
+          </div>
+
+          <!-- Lesson Type Selector -->
+          <div class="lesson-types-label">&#128218; Select Lesson Type</div>
+          <div class="lesson-types" id="lessonTypes">
+            <div class="lesson-card selected" onclick="selectLesson(this, 'Standard Lesson', '30 min', 25)">
+              <div class="lesson-icon">&#128214;</div>
+              <div class="lesson-name">Standard Lesson</div>
+              <div class="lesson-dur">30 minutes</div>
+              <div class="lesson-price">$25</div>
+            </div>
+            <div class="lesson-card" onclick="selectLesson(this, 'Intensive Session', '60 min', 45)">
+              <div class="lesson-icon">&#128218;</div>
+              <div class="lesson-name">Intensive Session</div>
+              <div class="lesson-dur">60 minutes</div>
+              <div class="lesson-price">$45</div>
+            </div>
+            <div class="lesson-card" onclick="selectLesson(this, 'Conversation Practice', '45 min', 35)">
+              <div class="lesson-icon">&#128172;</div>
+              <div class="lesson-name">Conversation Practice</div>
+              <div class="lesson-dur">45 minutes</div>
+              <div class="lesson-price">$35</div>
+            </div>
+          </div>
+
+          <!-- Calendar -->
+          <div class="calendar-label">&#128197; Pick a Date</div>
+          <div class="calendar">
+            <div class="calendar-header">
+              <button class="calendar-nav" onclick="return false">&#9664;</button>
+              <span class="calendar-month">March 2026</span>
+              <button class="calendar-nav" onclick="return false">&#9654;</button>
+            </div>
+            <div class="calendar-weekdays">
+              <div class="calendar-weekday">Mon</div>
+              <div class="calendar-weekday">Tue</div>
+              <div class="calendar-weekday">Wed</div>
+              <div class="calendar-weekday">Thu</div>
+              <div class="calendar-weekday">Fri</div>
+              <div class="calendar-weekday">Sat</div>
+              <div class="calendar-weekday">Sun</div>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+              <!-- March 2026 starts on Sunday. Mon-based grid: -->
+              <!-- Row 1: empty x6, then Sun 1 -->
+            </div>
+            <div class="calendar-legend">
+              <span><span class="leg-dot g"></span> High availability</span>
+              <span><span class="leg-dot y"></span> Limited slots</span>
+              <span><span class="leg-dot b"></span> Today</span>
+            </div>
+          </div>
+
+          <!-- Time Slots -->
+          <div class="time-label" id="timeLabel">Available times for <strong>Thursday, March 27</strong></div>
+          <div class="time-slots" id="timeSlots">
+            <div class="time-slot available" onclick="selectTime(this, '8:00 AM')">8:00 AM</div>
+            <div class="time-slot available selected" onclick="selectTime(this, '9:00 AM')">9:00 AM</div>
+            <div class="time-slot booked">10:00 AM</div>
+            <div class="time-slot available" onclick="selectTime(this, '11:00 AM')">11:00 AM</div>
+            <div class="time-slot available" onclick="selectTime(this, '12:00 PM')">12:00 PM</div>
+            <div class="time-slot limited" onclick="selectTime(this, '1:00 PM')">1:00 PM<span class="slot-label">Last slot!</span></div>
+            <div class="time-slot available" onclick="selectTime(this, '2:00 PM')">2:00 PM</div>
+            <div class="time-slot available" onclick="selectTime(this, '3:00 PM')">3:00 PM</div>
+            <div class="time-slot booked">4:00 PM</div>
+            <div class="time-slot available" onclick="selectTime(this, '5:00 PM')">5:00 PM</div>
+          </div>
+          <div class="timezone-note">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/></svg>
+            All times shown in East Africa Time (EAT, UTC+3)
+          </div>
+
+        </div>
+
+        <!-- Booking Summary -->
+        <div class="booking-summary">
+          <div class="summary-header">
+            <h3>Booking Summary</h3>
+          </div>
+          <div class="summary-body">
+            <div class="summary-row">
+              <span class="summary-label">Tutor</span>
+              <span class="summary-value">Tina</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Lesson</span>
+              <span class="summary-value" id="summaryLesson">Standard Lesson (30 min)</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Date</span>
+              <span class="summary-value" id="summaryDate">Thursday, March 27, 2026</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Time</span>
+              <span class="summary-value" id="summaryTime">9:00 AM EAT</span>
+            </div>
+            <div class="summary-total">
+              <span class="label">Total</span>
+              <span class="price" id="summaryPrice">$25.00</span>
+            </div>
+            <button class="btn-confirm" id="btnConfirm" onclick="confirmBooking()">Confirm Booking</button>
+            <p class="summary-note">You won't be charged until the lesson is confirmed</p>
+            <div class="summary-features">
+              <div class="summary-feature">
+                <svg width="14" height="14" fill="none" stroke="var(--green)" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Google Calendar sync
+              </div>
+              <div class="summary-feature">
+                <svg width="14" height="14" fill="none" stroke="var(--green)" stroke-width="2" viewBox="0 0 24 24"><path d="M15 10l-4 4l-2-2"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg>
+                Zoom link auto-generated
+              </div>
+              <div class="summary-feature">
+                <svg width="14" height="14" fill="none" stroke="var(--green)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Reminder 24h before
+              </div>
+            </div>
+            <div class="cancellation">
+              <svg width="16" height="16" fill="none" stroke="#92400e" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Free cancellation up to 24 hours before your lesson. Late cancellations may be charged.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+// State
+let selectedLessonName = 'Standard Lesson';
+let selectedLessonDur = '30 min';
+let selectedPrice = 25;
+let selectedDate = 27;
+let selectedTime = '9:00 AM';
+
+// Build Calendar for March 2026
+// March 1, 2026 is a Sunday. Mon-based week: Sun = 7
+function buildCalendar() {
+  const grid = document.getElementById('calendarGrid');
+  grid.innerHTML = '';
+  const today = 25;
+  const selected = selectedDate;
+  // March 2026: 31 days, starts on Sunday
+  // In Mon-based grid, Sunday = column 7
+  // So first day offset = 6 blank days (Mon-Sat empty, then Sun=1)
+  const startOffset = 6; // 0-indexed blanks before day 1
+  const daysInMonth = 31;
+
+  // Availability map
+  const highAvail = [2,3,5,6,9,11,12,16,17,19,20,23,24,26,27,30,31];
+  const limitedAvail = [4,10,13,18,25];
+
+  for (let i = 0; i < startOffset; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'calendar-day empty';
+    grid.appendChild(empty);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const day = document.createElement('div');
+    day.className = 'calendar-day';
+    day.textContent = d;
+
+    if (d < today) {
+      day.classList.add('past');
+    } else {
+      day.onclick = function() { selectDate(d, this); };
+    }
+
+    if (d === today) {
+      day.classList.add('today');
+    }
+    if (d === selected) {
+      day.classList.add('selected');
+    }
+
+    // Dots
+    if (d >= today) {
+      if (highAvail.includes(d)) {
+        const dot = document.createElement('span');
+        dot.className = 'dot green';
+        day.appendChild(dot);
+      } else if (limitedAvail.includes(d)) {
+        const dot = document.createElement('span');
+        dot.className = 'dot yellow';
+        day.appendChild(dot);
+      }
+    }
+
+    grid.appendChild(day);
+  }
+}
+
+function selectDate(day, el) {
+  selectedDate = day;
+  // Remove previous selected
+  document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+
+  // Update summary
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  // March 2026 day-of-week: March 1 = Sunday (0)
+  const dow = new Date(2026, 2, day).getDay();
+  const dayName = days[dow];
+  document.getElementById('summaryDate').textContent = dayName + ', March ' + day + ', 2026';
+  document.getElementById('timeLabel').innerHTML = 'Available times for <strong>' + dayName + ', March ' + day + '</strong>';
+}
+
+function selectLesson(el, name, dur, price) {
+  document.querySelectorAll('.lesson-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedLessonName = name;
+  selectedLessonDur = dur;
+  selectedPrice = price;
+  document.getElementById('summaryLesson').textContent = name + ' (' + dur + ')';
+  document.getElementById('summaryPrice').textContent = '$' + price.toFixed(2);
+}
+
+function selectTime(el, time) {
+  if (el.classList.contains('booked')) return;
+  document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedTime = time;
+  document.getElementById('summaryTime').textContent = time + ' EAT';
+}
+
+function toggleSection(id) {
+  document.getElementById(id).classList.toggle('collapsed');
+}
+
+function confirmBooking() {
+  const btn = document.getElementById('btnConfirm');
+  if (btn.classList.contains('booked')) return;
+
+  // Ripple effect
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  const rect = btn.getBoundingClientRect();
+  ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) + 'px';
+  ripple.style.left = '50%';
+  ripple.style.top = '50%';
+  ripple.style.marginLeft = -Math.max(rect.width, rect.height) / 2 + 'px';
+  ripple.style.marginTop = -Math.max(rect.width, rect.height) / 2 + 'px';
+  btn.appendChild(ripple);
+
+  setTimeout(function() {
+    btn.classList.add('booked');
+    btn.innerHTML = '&#10003; Booked!';
+
+    // Update step indicator
+    const steps = document.querySelectorAll('.step');
+    steps[1].classList.remove('step-active');
+    steps[1].classList.add('step-completed');
+    steps[1].querySelector('.step-circle').innerHTML = '&#10003;';
+    steps[2].classList.remove('step-upcoming');
+    steps[2].classList.add('step-completed');
+    steps[2].querySelector('.step-circle').innerHTML = '&#10003;';
+    document.querySelectorAll('.step-connector')[1].classList.add('done');
+  }, 300);
+
+  setTimeout(function() {
+    if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
+  }, 700);
+}
+
+// Init
+buildCalendar();
+</script>
+
+</body>
+</html>
