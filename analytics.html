@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Command Center — Soma Languages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+</head>
+<body>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav class="nav" id="nav">
+    <div class="nav__container">
+      <a href="index.html" class="nav__logo">
+        <span class="nav__logo-icon">S</span>
+        <span class="nav__logo-text">Soma Languages</span>
+      </a>
+      <div class="nav__links">
+        <a href="index.html#about">About</a>
+        <a href="index.html#ecosystem">Solutions</a>
+        <a href="index.html#roadmap">Roadmap</a>
+        <a href="index.html#investment">Investment</a>
+        <a href="index.html#cta" class="nav__cta">Let's Talk</a>
+      </div>
+      <button class="nav__mobile-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===================== PAGE HERO ===================== -->
+  <section class="page-hero fade-up">
+    <div class="page-hero__decor page-hero__decor--1"></div>
+    <div class="page-hero__decor page-hero__decor--2"></div>
+    <div class="container">
+      <span class="page-hero__badge"><span class="page-hero__num">06</span> Command Center</span>
+      <h1 class="page-hero__title">Every Metric That<br>Matters, <span class="gradient-text">At a Glance</span></h1>
+      <p class="page-hero__subtitle">Revenue trends, student retention, tutor performance, marketing ROI — all in one beautiful dashboard. Make data-driven decisions that accelerate growth.</p>
+      <div class="page-hero__nav">
+        <a href="index.html" class="page-nav-btn page-nav-btn--back">&larr; Back to Proposal</a>
+        <a href="platform.html" class="page-nav-btn page-nav-btn--back">View Platform &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURE HIGHLIGHTS ===================== -->
+  <section class="page-highlights fade-up">
+    <div class="container">
+      <div class="page-highlights__grid">
+        <div class="page-highlight">
+          <div class="page-highlight__icon page-highlight__icon--gold">💰</div>
+          <h3>Revenue Dashboard</h3>
+          <p>Track monthly revenue, forecast growth, compare periods side-by-side</p>
+        </div>
+        <div class="page-highlight">
+          <div class="page-highlight__icon page-highlight__icon--blue">👥</div>
+          <h3>Student Analytics</h3>
+          <p>Enrollment, retention, churn rates, and satisfaction scores at a glance</p>
+        </div>
+        <div class="page-highlight">
+          <div class="page-highlight__icon page-highlight__icon--green">⭐</div>
+          <h3>Tutor Performance</h3>
+          <p>Lesson ratings, student feedback, hours taught, revenue generated per tutor</p>
+        </div>
+        <div class="page-highlight">
+          <div class="page-highlight__icon page-highlight__icon--purple">📈</div>
+          <h3>Marketing ROI</h3>
+          <p>See which channels bring students and their lifetime value to your business</p>
+        </div>
+        <div class="page-highlight">
+          <div class="page-highlight__icon page-highlight__icon--cyan">🎯</div>
+          <h3>Growth Forecasting</h3>
+          <p>AI-powered predictions based on current trends and historical data</p>
+        </div>
+        <div class="page-highlight">
+          <div class="page-highlight__icon page-highlight__icon--red">📊</div>
+          <h3>Custom Reports</h3>
+          <p>Export beautiful PDF reports for stakeholders, partners, or investors</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SHOWCASE ===================== -->
+  <section class="page-showcase page-showcase--dark fade-up">
+    <div class="container">
+      <div class="page-showcase__mockup">
+        <div class="mockup-browser">
+          <div class="mockup-browser__toolbar">
+            <div class="mockup-browser__dots">
+              <span class="dot dot--red"></span>
+              <span class="dot dot--yellow"></span>
+              <span class="dot dot--green"></span>
+            </div>
+            <div class="mockup-browser__url">app.somalanguages.com/analytics</div>
+          </div>
+          <div class="mockup-browser__content" style="background: #0a0e1a; padding: 24px; font-family: 'Inter', sans-serif;">
+
+            <!-- Dashboard Header -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+              <div>
+                <div style="font-size: 1.1rem; font-weight: 700; color: #f1f5f9;">Command Center</div>
+                <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">Last updated: Today at 9:41 AM</div>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <span style="padding: 5px 14px; border-radius: 100px; font-size: 0.7rem; font-weight: 600; background: rgba(201,168,76,0.15); color: #c9a84c; border: 1px solid rgba(201,168,76,0.3);">This Month</span>
+                <span style="padding: 5px 14px; border-radius: 100px; font-size: 0.7rem; font-weight: 500; background: rgba(255,255,255,0.04); color: #64748b; border: 1px solid #1e293b;">Export PDF</span>
+              </div>
+            </div>
+
+            <!-- KPI Cards -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
+              <div style="background: #111827; border: 1px solid #1e293b; border-radius: 12px; padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                  <span style="font-size: 0.7rem; font-weight: 500; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Monthly Revenue</span>
+                  <span style="font-size: 0.65rem; font-weight: 600; color: #10b981; background: rgba(16,185,129,0.1); padding: 2px 8px; border-radius: 100px;">+23%</span>
+                </div>
+                <div style="font-size: 1.6rem; font-weight: 700; color: #f1f5f9;">$8,420</div>
+                <div style="font-size: 0.65rem; color: #64748b; margin-top: 4px;">vs $6,845 last month</div>
+              </div>
+              <div style="background: #111827; border: 1px solid #1e293b; border-radius: 12px; padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                  <span style="font-size: 0.7rem; font-weight: 500; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Active Students</span>
+                  <span style="font-size: 0.65rem; font-weight: 600; color: #10b981; background: rgba(16,185,129,0.1); padding: 2px 8px; border-radius: 100px;">+12</span>
+                </div>
+                <div style="font-size: 1.6rem; font-weight: 700; color: #f1f5f9;">67</div>
+                <div style="font-size: 0.65rem; color: #64748b; margin-top: 4px;">55 last month</div>
+              </div>
+              <div style="background: #111827; border: 1px solid #1e293b; border-radius: 12px; padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                  <span style="font-size: 0.7rem; font-weight: 500; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Retention Rate</span>
+                  <span style="font-size: 0.65rem; font-weight: 600; color: #10b981; background: rgba(16,185,129,0.1); padding: 2px 8px; border-radius: 100px;">+3%</span>
+                </div>
+                <div style="font-size: 1.6rem; font-weight: 700; color: #f1f5f9;">94%</div>
+                <div style="font-size: 0.65rem; color: #64748b; margin-top: 4px;">91% last month</div>
+              </div>
+            </div>
+
+            <!-- Revenue Chart + Tutor Performance -->
+            <div style="display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px;">
+
+              <!-- Revenue Chart -->
+              <div style="background: #111827; border: 1px solid #1e293b; border-radius: 12px; padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                  <span style="font-size: 0.8rem; font-weight: 600; color: #f1f5f9;">Revenue Growth</span>
+                  <span style="font-size: 0.65rem; color: #64748b;">Last 6 months</span>
+                </div>
+                <svg viewBox="0 0 500 180" style="width: 100%; height: auto; display: block;">
+                  <defs>
+                    <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.3"/>
+                      <stop offset="100%" stop-color="#c9a84c" stop-opacity="0.02"/>
+                    </linearGradient>
+                  </defs>
+                  <!-- Grid lines -->
+                  <line x1="40" y1="20" x2="480" y2="20" stroke="#1e293b" stroke-width="0.5"/>
+                  <line x1="40" y1="55" x2="480" y2="55" stroke="#1e293b" stroke-width="0.5"/>
+                  <line x1="40" y1="90" x2="480" y2="90" stroke="#1e293b" stroke-width="0.5"/>
+                  <line x1="40" y1="125" x2="480" y2="125" stroke="#1e293b" stroke-width="0.5"/>
+                  <line x1="40" y1="160" x2="480" y2="160" stroke="#1e293b" stroke-width="0.5"/>
+                  <!-- Y-axis labels -->
+                  <text x="32" y="24" fill="#475569" font-size="9" text-anchor="end">$10k</text>
+                  <text x="32" y="59" fill="#475569" font-size="9" text-anchor="end">$8k</text>
+                  <text x="32" y="94" fill="#475569" font-size="9" text-anchor="end">$6k</text>
+                  <text x="32" y="129" fill="#475569" font-size="9" text-anchor="end">$4k</text>
+                  <text x="32" y="164" fill="#475569" font-size="9" text-anchor="end">$2k</text>
+                  <!-- Gradient fill area -->
+                  <path d="M80,130 L160,115 L240,105 L320,85 L400,60 L480,35 L480,160 L80,160 Z" fill="url(#chartGradient)"/>
+                  <!-- Line -->
+                  <path d="M80,130 L160,115 L240,105 L320,85 L400,60 L480,35" fill="none" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- Data points -->
+                  <circle cx="80" cy="130" r="4" fill="#0a0e1a" stroke="#c9a84c" stroke-width="2"/>
+                  <circle cx="160" cy="115" r="4" fill="#0a0e1a" stroke="#c9a84c" stroke-width="2"/>
+                  <circle cx="240" cy="105" r="4" fill="#0a0e1a" stroke="#c9a84c" stroke-width="2"/>
+                  <circle cx="320" cy="85" r="4" fill="#0a0e1a" stroke="#c9a84c" stroke-width="2"/>
+                  <circle cx="400" cy="60" r="4" fill="#0a0e1a" stroke="#c9a84c" stroke-width="2"/>
+                  <circle cx="480" cy="35" r="5" fill="#c9a84c" stroke="#c9a84c" stroke-width="2"/>
+                  <!-- X-axis labels -->
+                  <text x="80" y="176" fill="#475569" font-size="9" text-anchor="middle">Oct</text>
+                  <text x="160" y="176" fill="#475569" font-size="9" text-anchor="middle">Nov</text>
+                  <text x="240" y="176" fill="#475569" font-size="9" text-anchor="middle">Dec</text>
+                  <text x="320" y="176" fill="#475569" font-size="9" text-anchor="middle">Jan</text>
+                  <text x="400" y="176" fill="#475569" font-size="9" text-anchor="middle">Feb</text>
+                  <text x="480" y="176" fill="#475569" font-size="9" text-anchor="middle">Mar</text>
+                </svg>
+              </div>
+
+              <!-- Tutor Performance -->
+              <div style="background: #111827; border: 1px solid #1e293b; border-radius: 12px; padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                  <span style="font-size: 0.8rem; font-weight: 600; color: #f1f5f9;">Tutor Performance</span>
+                  <span style="font-size: 0.65rem; color: #64748b;">Avg. Rating</span>
+                </div>
+
+                <!-- Tina -->
+                <div style="margin-bottom: 18px;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <div style="width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #c9a84c, #e8c84a); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; color: #0a0e1a;">T</div>
+                      <span style="font-size: 0.78rem; font-weight: 500; color: #e2e8f0;">Tina</span>
+                    </div>
+                    <span style="font-size: 0.78rem; font-weight: 700; color: #c9a84c;">96%</span>
+                  </div>
+                  <div style="height: 6px; background: #1e293b; border-radius: 100px; overflow: hidden;">
+                    <div style="width: 96%; height: 100%; background: linear-gradient(90deg, #c9a84c, #e8c84a); border-radius: 100px;"></div>
+                  </div>
+                </div>
+
+                <!-- Sarah -->
+                <div style="margin-bottom: 18px;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <div style="width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #818cf8); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; color: #fff;">S</div>
+                      <span style="font-size: 0.78rem; font-weight: 500; color: #e2e8f0;">Sarah</span>
+                    </div>
+                    <span style="font-size: 0.78rem; font-weight: 700; color: #818cf8;">91%</span>
+                  </div>
+                  <div style="height: 6px; background: #1e293b; border-radius: 100px; overflow: hidden;">
+                    <div style="width: 91%; height: 100%; background: linear-gradient(90deg, #6366f1, #818cf8); border-radius: 100px;"></div>
+                  </div>
+                </div>
+
+                <!-- James -->
+                <div style="margin-bottom: 18px;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <div style="width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #34d399); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; color: #fff;">J</div>
+                      <span style="font-size: 0.78rem; font-weight: 500; color: #e2e8f0;">James</span>
+                    </div>
+                    <span style="font-size: 0.78rem; font-weight: 700; color: #34d399;">88%</span>
+                  </div>
+                  <div style="height: 6px; background: #1e293b; border-radius: 100px; overflow: hidden;">
+                    <div style="width: 88%; height: 100%; background: linear-gradient(90deg, #10b981, #34d399); border-radius: 100px;"></div>
+                  </div>
+                </div>
+
+                <!-- Student Growth Mini Metrics -->
+                <div style="border-top: 1px solid #1e293b; padding-top: 16px; margin-top: 4px;">
+                  <div style="font-size: 0.7rem; font-weight: 500; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Student Growth</div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div style="background: rgba(16,185,129,0.08); border-radius: 8px; padding: 10px; text-align: center;">
+                      <div style="font-size: 1.1rem; font-weight: 700; color: #10b981;">+18</div>
+                      <div style="font-size: 0.6rem; color: #64748b; margin-top: 2px;">New This Month</div>
+                    </div>
+                    <div style="background: rgba(99,102,241,0.08); border-radius: 8px; padding: 10px; text-align: center;">
+                      <div style="font-size: 1.1rem; font-weight: 700; color: #818cf8;">4.8</div>
+                      <div style="font-size: 0.6rem; color: #64748b; margin-top: 2px;">Avg. Satisfaction</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== USE CASES ===================== -->
+  <section class="page-usecases fade-up">
+    <div class="container">
+      <div class="page-usecases__grid">
+        <div class="page-usecase">
+          <div class="page-usecase__icon">📅</div>
+          <div>
+            <h4>Monthly Reviews</h4>
+            <p>Open your dashboard every month to see exactly where the business stands</p>
+          </div>
+        </div>
+        <div class="page-usecase">
+          <div class="page-usecase__icon">🏅</div>
+          <div>
+            <h4>Tutor Coaching</h4>
+            <p>Identify which tutors need support and which deserve recognition</p>
+          </div>
+        </div>
+        <div class="page-usecase">
+          <div class="page-usecase__icon">💼</div>
+          <div>
+            <h4>Investor Ready</h4>
+            <p>Export professional reports if you ever seek funding or partnerships</p>
+          </div>
+        </div>
+        <div class="page-usecase">
+          <div class="page-usecase__icon">🚀</div>
+          <div>
+            <h4>Growth Decisions</h4>
+            <p>Data tells you when to hire new tutors, raise prices, or launch campaigns</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE CTA ===================== -->
+  <section class="page-cta fade-up">
+    <div class="container">
+      <h2 class="section-title" style="color: var(--white);">Ready to make data-driven decisions?</h2>
+      <div class="page-cta__actions">
+        <a href="index.html" class="btn btn--primary">Back to Full Proposal</a>
+        <a href="mailto:hello@tradefiti.com" class="btn btn--outline">Schedule a Call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__brand">
+          <span class="nav__logo-icon">S</span>
+          <span>Soma Languages</span>
+          <span class="footer__x">&times;</span>
+          <span class="cta-partner__t" style="width:28px;height:28px;font-size:12px">T</span>
+          <span>Tradefiti</span>
+        </div>
+        <p class="footer__copy">This proposal is confidential and prepared exclusively for Soma Languages. &copy; 2026 Tradefiti.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

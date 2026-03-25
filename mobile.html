@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soma Mobile App — Soma Languages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+  <style>
+    .phone-pair { display: flex; gap: 32px; justify-content: center; align-items: flex-start; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav class="nav" id="nav">
+    <div class="nav__container">
+      <a href="index.html" class="nav__logo">
+        <span class="nav__logo-icon">S</span>
+        <span class="nav__logo-text">Soma Languages</span>
+      </a>
+      <div class="nav__links">
+        <a href="index.html#about">About</a>
+        <a href="index.html#ecosystem">Solutions</a>
+        <a href="index.html#roadmap">Roadmap</a>
+        <a href="index.html#investment">Investment</a>
+        <a href="index.html#cta" class="nav__cta">Let's Talk</a>
+      </div>
+      <button class="nav__mobile-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===================== PAGE HERO ===================== -->
+  <section class="page-hero fade-up">
+    <div class="page-hero__decor page-hero__decor--1"></div>
+    <div class="page-hero__decor page-hero__decor--2"></div>
+    <div class="container">
+      <span class="page-hero__badge"><span class="page-hero__num">04</span> Soma Mobile</span>
+      <h1 class="page-hero__title">Soma Languages<br>In Every <span class="gradient-text">Pocket</span></h1>
+      <p class="page-hero__subtitle">A beautiful native app for iOS and Android. Students book lessons, practice with AI, review flashcards, and track progress — all from their phone.</p>
+      <div class="page-hero__nav">
+        <a href="index.html" class="page-nav-btn page-nav-btn--back">&larr; Back to Proposal</a>
+        <a href="platform.html" class="page-nav-btn page-nav-btn--back">View Platform &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURE HIGHLIGHTS ===================== -->
+  <section class="page-highlights fade-up">
+    <div class="container">
+      <div class="page-highlights__grid">
+        <div class="page-highlight">
+          <div class="page-highlight__icon page-highlight__icon--blue">📱</div>
+          <h3>Native iOS & Android</h3>
+          <p>Built with React Native for smooth performance on every device</p>
+        </div>
+        <div class="page-highlight">
+          <div class="page-highlight__icon page-highlight__icon--green">🔔</div>
+          <h3>Push Notifications</h3>
+          <p>Lesson reminders, streak alerts, new content notifications</p>
+        </div>
+        <div class="page-highlight">
+          <div class="page-highlight__icon page-highlight__icon--purple">📚</div>
+          <h3>Offline Flashcards</h3>
+          <p>Download vocabulary decks for offline study anywhere</p>
+        </div>
+        <div class="page-highlight">
+          <div class="page-highlight__icon page-highlight__icon--gold">🎤</div>
+          <h3>Voice Recording</h3>
+          <p>Record pronunciation for self-review and tutor feedback</p>
+        </div>
+        <div class="page-highlight">
+          <div class="page-highlight__icon page-highlight__icon--cyan">📅</div>
+          <h3>In-App Booking</h3>
+          <p>Book and manage lessons without leaving the app</p>
+        </div>
+        <div class="page-highlight">
+          <div class="page-highlight__icon page-highlight__icon--red">🔥</div>
+          <h3>Streak System</h3>
+          <p>Daily engagement rewards to keep students motivated</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SHOWCASE ===================== -->
+  <section class="page-showcase page-showcase--dark fade-up">
+    <div class="container">
+      <div class="page-showcase__mockup">
+        <div class="phone-pair">
+
+          <!-- Phone 1: Home Screen -->
+          <div class="mockup-phone">
+            <div class="mockup-phone__notch"></div>
+            <div class="mockup-phone__screen">
+              <div class="mockup-app">
+                <div class="mockup-app__header">
+                  <div class="mockup-app__greeting">
+                    <div class="mockup-app__hello">Hello, Sarah!</div>
+                    <div class="mockup-app__sub">Ready to practice?</div>
+                  </div>
+                  <div class="mockup-app__profile">S</div>
+                </div>
+                <div class="mockup-app__card mockup-app__card--lesson">
+                  <div class="mockup-app__card-label">Next Lesson</div>
+                  <div class="mockup-app__card-title">Business English</div>
+                  <div class="mockup-app__card-meta">Today, 2:00 PM · with Tina</div>
+                  <div class="mockup-app__card-btn">Join Lesson</div>
+                </div>
+                <div class="mockup-app__actions">
+                  <div class="mockup-app__action">
+                    <div class="mockup-app__action-icon mockup-app__action-icon--blue">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                    </div>
+                    <span>AI Practice</span>
+                  </div>
+                  <div class="mockup-app__action">
+                    <div class="mockup-app__action-icon mockup-app__action-icon--green">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+                    </div>
+                    <span>Book</span>
+                  </div>
+                  <div class="mockup-app__action">
+                    <div class="mockup-app__action-icon mockup-app__action-icon--purple">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                    </div>
+                    <span>Vocab</span>
+                  </div>
+                  <div class="mockup-app__action">
+                    <div class="mockup-app__action-icon mockup-app__action-icon--gold">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    </div>
+                    <span>Progress</span>
+                  </div>
+                </div>
+                <div class="mockup-app__progress">
+                  <div class="mockup-app__progress-header">
+                    <span>Weekly Progress</span>
+                    <span class="mockup-app__progress-pct">78%</span>
+                  </div>
+                  <div class="mockup-app__progress-bar">
+                    <div class="mockup-app__progress-fill" style="width: 78%"></div>
+                  </div>
+                </div>
+                <div class="mockup-app__streak">
+                  <span>🔥 12 day streak!</span>
+                </div>
+              </div>
+              <div class="mockup-app__tabbar">
+                <div class="mockup-tab mockup-tab--active">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+                </div>
+                <div class="mockup-tab">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                </div>
+                <div class="mockup-tab">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                </div>
+                <div class="mockup-tab">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phone 2: AI Chat Screen -->
+          <div class="mockup-phone">
+            <div class="mockup-phone__notch"></div>
+            <div class="mockup-phone__screen" style="background: #0d1520;">
+              <div class="mockup-chat" style="min-height: auto !important;">
+                <div class="mockup-chat__header">
+                  <div class="mockup-chat__avatar mockup-chat__avatar--ai">S</div>
+                  <div>
+                    <div class="mockup-chat__name">SomaAI</div>
+                    <div class="mockup-chat__status">Online</div>
+                  </div>
+                </div>
+                <div class="mockup-chat__messages">
+                  <div class="mockup-msg mockup-msg--ai">
+                    <div class="mockup-msg__bubble">
+                      Let's practice ordering food! I'll be the waiter. Ready? 🍽️
+                    </div>
+                  </div>
+                  <div class="mockup-msg mockup-msg--user">
+                    <div class="mockup-msg__bubble">
+                      I would like the fish please
+                    </div>
+                  </div>
+                  <div class="mockup-msg mockup-msg--ai">
+                    <div class="mockup-msg__bubble">
+                      Good start! Try: <strong>"Could I have the fish, please?"</strong> — using "Could I have" sounds more polite and natural. ✨
+                    </div>
+                  </div>
+                  <div class="mockup-msg mockup-msg--user">
+                    <div class="mockup-msg__bubble">
+                      Could I have the fish, please?
+                    </div>
+                  </div>
+                  <div class="mockup-msg mockup-msg--ai">
+                    <div class="mockup-msg__bubble">
+                      Perfect! 🌟 <strong>Politeness: Native-like</strong><br>
+                      Would you like to add a drink?
+                    </div>
+                  </div>
+                </div>
+                <div class="mockup-chat__input">
+                  <div class="mockup-chat__input-field">Type your response...</div>
+                  <div class="mockup-chat__send">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-app__tabbar" style="border-top: 1px solid rgba(255,255,255,0.08); background: #0d1520;">
+                <div class="mockup-tab" style="color: rgba(255,255,255,0.4);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+                </div>
+                <div class="mockup-tab" style="color: rgba(255,255,255,0.4);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                </div>
+                <div class="mockup-tab mockup-tab--active">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                </div>
+                <div class="mockup-tab" style="color: rgba(255,255,255,0.4);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== USE CASES ===================== -->
+  <section class="page-usecases fade-up">
+    <div class="container">
+      <div class="page-usecases__grid">
+        <div class="page-usecase">
+          <div class="page-usecase__icon">🚆</div>
+          <div>
+            <h4>Morning Commute</h4>
+            <p>Students practice vocabulary flashcards on the train</p>
+          </div>
+        </div>
+        <div class="page-usecase">
+          <div class="page-usecase__icon">📅</div>
+          <div>
+            <h4>Quick Booking</h4>
+            <p>Book tomorrow's lesson in 3 taps from anywhere</p>
+          </div>
+        </div>
+        <div class="page-usecase">
+          <div class="page-usecase__icon">🎙️</div>
+          <div>
+            <h4>Voice Practice</h4>
+            <p>Record pronunciation exercises and get AI feedback instantly</p>
+          </div>
+        </div>
+        <div class="page-usecase">
+          <div class="page-usecase__icon">🔥</div>
+          <div>
+            <h4>Stay Motivated</h4>
+            <p>Daily streaks and push reminders keep engagement high</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE CTA ===================== -->
+  <section class="page-cta fade-up">
+    <div class="container">
+      <h2 class="section-title" style="color: var(--white);">Ready to put Soma in every student's pocket?</h2>
+      <div class="page-cta__actions">
+        <a href="index.html" class="btn btn--primary">Back to Full Proposal</a>
+        <a href="mailto:hello@tradefiti.com" class="btn btn--outline">Schedule a Call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__brand">
+          <span class="nav__logo-icon">S</span>
+          <span>Soma Languages</span>
+          <span class="footer__x">&times;</span>
+          <span class="cta-partner__t" style="width:28px;height:28px;font-size:12px">T</span>
+          <span>Tradefiti</span>
+        </div>
+        <p class="footer__copy">This proposal is confidential and prepared exclusively for Soma Languages. &copy; 2026 Tradefiti.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

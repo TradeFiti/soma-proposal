@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Booking & Team Management — Soma Languages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+</head>
+<body>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav class="nav" id="nav">
+    <div class="nav__container">
+      <a href="index.html" class="nav__logo">
+        <span class="nav__logo-icon">S</span>
+        <span class="nav__logo-text">Soma Languages</span>
+      </a>
+      <div class="nav__links">
+        <a href="index.html#about">About</a>
+        <a href="index.html#ecosystem">Solutions</a>
+        <a href="index.html#roadmap">Roadmap</a>
+        <a href="index.html#investment">Investment</a>
+        <a href="index.html#cta" class="nav__cta">Let's Talk</a>
+      </div>
+      <button class="nav__mobile-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===================== PAGE HERO ===================== -->
+  <section class="page-hero">
+    <div class="page-hero__decor page-hero__decor--1"></div>
+    <div class="page-hero__decor page-hero__decor--2"></div>
+    <div class="container">
+      <span class="page-hero__badge fade-up"><span class="page-hero__num">03</span> Smart Booking</span>
+      <h1 class="page-hero__title fade-up">
+        Manage Your Growing<br>Team <span class="gradient-text">Effortlessly</span>
+      </h1>
+      <p class="page-hero__subtitle fade-up">
+        Centralized booking where students pick tutors, see availability, and book instantly. Automatic timezone detection, reminders, and rescheduling.
+      </p>
+      <div class="page-hero__nav fade-up">
+        <a href="index.html#ecosystem" class="page-nav-btn page-nav-btn--back">&larr; All Solutions</a>
+        <a href="index.html#cta" class="btn btn--primary">Get Started</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURE HIGHLIGHTS ===================== -->
+  <section class="page-highlights">
+    <div class="container">
+      <div class="section-label fade-up">What's Included</div>
+      <h2 class="section-title fade-up">
+        Everything You Need to <span class="gradient-text">Scale Scheduling</span>
+      </h2>
+      <div class="page-highlights__grid" style="margin-top: 48px;">
+
+        <div class="page-highlight fade-up">
+          <div class="page-highlight__icon page-highlight__icon--blue">📅</div>
+          <h3>Multi-Tutor Scheduling</h3>
+          <p>Each tutor sets their own availability. Students browse open slots across your entire team and book in seconds.</p>
+        </div>
+
+        <div class="page-highlight fade-up">
+          <div class="page-highlight__icon page-highlight__icon--green">🌍</div>
+          <h3>Timezone Magic</h3>
+          <p>Automatic detection and conversion for global students. Everyone sees times in their own timezone — no confusion.</p>
+        </div>
+
+        <div class="page-highlight fade-up">
+          <div class="page-highlight__icon page-highlight__icon--gold">🔔</div>
+          <h3>Smart Reminders</h3>
+          <p>Email &amp; SMS reminders reduce no-shows by 80%. Sent 24 hours and 1 hour before every lesson automatically.</p>
+        </div>
+
+        <div class="page-highlight fade-up">
+          <div class="page-highlight__icon page-highlight__icon--purple">📱</div>
+          <h3>Calendar Sync</h3>
+          <p>Google Calendar &amp; Outlook integration keeps tutors and students in sync — no double bookings, ever.</p>
+        </div>
+
+        <div class="page-highlight fade-up">
+          <div class="page-highlight__icon page-highlight__icon--cyan">🎯</div>
+          <h3>Student Matching</h3>
+          <p>Match students to tutors based on learning goals, proficiency level, and scheduling preferences.</p>
+        </div>
+
+        <div class="page-highlight fade-up">
+          <div class="page-highlight__icon page-highlight__icon--red">💳</div>
+          <h3>Package Management</h3>
+          <p>Create lesson packages, track usage, and enable auto-renew. Students see remaining credits at a glance.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SHOWCASE ===================== -->
+  <section class="page-showcase page-showcase--light">
+    <div class="container">
+      <div class="section-label fade-up">Live Preview</div>
+      <h2 class="section-title fade-up">
+        Your Booking Calendar, <span class="gradient-text">Beautifully Simple</span>
+      </h2>
+      <div class="page-showcase__mockup fade-up" style="margin-top: 48px;">
+
+        <div class="mockup-browser" style="max-width: 100%;">
+          <div class="mockup-browser__toolbar">
+            <div class="mockup-browser__dots">
+              <span class="dot dot--red"></span>
+              <span class="dot dot--yellow"></span>
+              <span class="dot dot--green"></span>
+            </div>
+            <div class="mockup-browser__url">app.somalanguages.com/book</div>
+          </div>
+          <div class="mockup-browser__content" style="padding: 0; min-height: auto;">
+
+            <!-- Booking App Header -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 16px; border-bottom: 1px solid #e5e7eb;">
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: #1a1a2e; margin: 0;">Book a Lesson</h3>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <button style="background: none; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; cursor: pointer; font-size: 0.8rem; color: #64748b;">&larr;</button>
+                <span style="font-weight: 600; font-size: 0.95rem; color: #1a1a2e;">March 2026</span>
+                <button style="background: none; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; cursor: pointer; font-size: 0.8rem; color: #64748b;">&rarr;</button>
+              </div>
+            </div>
+
+            <!-- Tutor Tabs -->
+            <div style="display: flex; gap: 8px; padding: 16px 24px; overflow-x: auto; border-bottom: 1px solid #e5e7eb;">
+              <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 100px; background: linear-gradient(135deg, #c9a84c, #d4b65e); color: #1a1a2e; font-size: 0.8rem; font-weight: 600; white-space: nowrap; cursor: pointer;">
+                <span style="width: 26px; height: 26px; border-radius: 50%; background: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: #c9a84c;">T</span>
+                Tina
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 100px; background: rgba(45,91,255,0.08); color: #2d5bff; font-size: 0.8rem; font-weight: 600; white-space: nowrap; cursor: pointer; border: 1px solid rgba(45,91,255,0.15);">
+                <span style="width: 26px; height: 26px; border-radius: 50%; background: rgba(45,91,255,0.12); display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: #2d5bff;">S</span>
+                Sarah
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 100px; background: rgba(16,185,129,0.08); color: #10b981; font-size: 0.8rem; font-weight: 600; white-space: nowrap; cursor: pointer; border: 1px solid rgba(16,185,129,0.15);">
+                <span style="width: 26px; height: 26px; border-radius: 50%; background: rgba(16,185,129,0.12); display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: #10b981;">J</span>
+                James
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 100px; background: rgba(168,85,247,0.08); color: #a855f7; font-size: 0.8rem; font-weight: 600; white-space: nowrap; cursor: pointer; border: 1px solid rgba(168,85,247,0.15);">
+                <span style="width: 26px; height: 26px; border-radius: 50%; background: rgba(168,85,247,0.12); display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: #a855f7;">L</span>
+                Lucy
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 100px; background: rgba(0,0,0,0.04); color: #64748b; font-size: 0.8rem; font-weight: 600; white-space: nowrap; cursor: pointer; border: 1px solid #e5e7eb;">
+                All Tutors
+              </div>
+            </div>
+
+            <!-- Calendar Grid -->
+            <div style="padding: 16px 24px 8px;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem;">
+                <thead>
+                  <tr>
+                    <th style="padding: 8px 4px; color: #94a3b8; font-weight: 600; text-align: center; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px;"></th>
+                    <th style="padding: 8px 4px; color: #94a3b8; font-weight: 600; text-align: center; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px;">Mon 23</th>
+                    <th style="padding: 8px 4px; color: #94a3b8; font-weight: 600; text-align: center; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px;">Tue 24</th>
+                    <th style="padding: 8px 4px; color: #94a3b8; font-weight: 600; text-align: center; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px;">Wed 25</th>
+                    <th style="padding: 8px 4px; color: #94a3b8; font-weight: 600; text-align: center; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px;">Thu 26</th>
+                    <th style="padding: 8px 4px; color: #94a3b8; font-weight: 600; text-align: center; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px;">Fri 27</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding: 6px 8px; color: #94a3b8; font-weight: 500; font-size: 0.72rem; white-space: nowrap;">09:00</td>
+                    <td style="padding: 4px;"><div style="background: #d1fae5; color: #059669; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Open</div></td>
+                    <td style="padding: 4px;"><div style="background: #fef3c7; color: #d97706; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">1 left</div></td>
+                    <td style="padding: 4px;"><div style="background: #d1fae5; color: #059669; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Open</div></td>
+                    <td style="padding: 4px;"><div style="background: #fee2e2; color: #dc2626; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Booked</div></td>
+                    <td style="padding: 4px;"><div style="background: #d1fae5; color: #059669; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Open</div></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 8px; color: #94a3b8; font-weight: 500; font-size: 0.72rem; white-space: nowrap;">10:00</td>
+                    <td style="padding: 4px;"><div style="background: #fee2e2; color: #dc2626; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Booked</div></td>
+                    <td style="padding: 4px;"><div style="background: #d1fae5; color: #059669; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Open</div></td>
+                    <td style="padding: 4px;"><div style="background: #fef3c7; color: #d97706; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">1 left</div></td>
+                    <td style="padding: 4px;"><div style="background: #d1fae5; color: #059669; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Open</div></td>
+                    <td style="padding: 4px;"><div style="background: #fee2e2; color: #dc2626; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Booked</div></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 8px; color: #94a3b8; font-weight: 500; font-size: 0.72rem; white-space: nowrap;">11:00</td>
+                    <td style="padding: 4px;"><div style="background: #d1fae5; color: #059669; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Open</div></td>
+                    <td style="padding: 4px;"><div style="background: #fee2e2; color: #dc2626; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Booked</div></td>
+                    <td style="padding: 4px;"><div style="background: #d1fae5; color: #059669; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Open</div></td>
+                    <td style="padding: 4px;"><div style="background: #fef3c7; color: #d97706; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">1 left</div></td>
+                    <td style="padding: 4px;"><div style="background: #d1fae5; color: #059669; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Open</div></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 8px; color: #94a3b8; font-weight: 500; font-size: 0.72rem; white-space: nowrap;">14:00</td>
+                    <td style="padding: 4px;"><div style="background: #fef3c7; color: #d97706; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">1 left</div></td>
+                    <td style="padding: 4px;"><div style="background: #d1fae5; color: #059669; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Open</div></td>
+                    <td style="padding: 4px;"><div style="background: #fee2e2; color: #dc2626; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Booked</div></td>
+                    <td style="padding: 4px;"><div style="background: #d1fae5; color: #059669; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Open</div></td>
+                    <td style="padding: 4px;"><div style="background: #d1fae5; color: #059669; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Open</div></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 8px; color: #94a3b8; font-weight: 500; font-size: 0.72rem; white-space: nowrap;">15:00</td>
+                    <td style="padding: 4px;"><div style="background: #d1fae5; color: #059669; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Open</div></td>
+                    <td style="padding: 4px;"><div style="background: #d1fae5; color: #059669; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Open</div></td>
+                    <td style="padding: 4px;"><div style="background: #d1fae5; color: #059669; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Open</div></td>
+                    <td style="padding: 4px;"><div style="background: #fee2e2; color: #dc2626; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">Booked</div></td>
+                    <td style="padding: 4px;"><div style="background: #fef3c7; color: #d97706; border-radius: 6px; padding: 6px 4px; text-align: center; font-weight: 600; font-size: 0.7rem;">1 left</div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Legend + Book Button -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px 20px; border-top: 1px solid #e5e7eb; margin-top: 8px;">
+              <div style="display: flex; gap: 16px; font-size: 0.72rem; color: #64748b;">
+                <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 3px; background: #d1fae5; display: inline-block;"></span> Available</span>
+                <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 3px; background: #fef3c7; display: inline-block;"></span> Limited</span>
+                <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 3px; background: #fee2e2; display: inline-block;"></span> Booked</span>
+              </div>
+              <button style="background: linear-gradient(135deg, #c9a84c, #d4b65e); color: #1a1a2e; border: none; padding: 10px 28px; border-radius: 100px; font-weight: 700; font-size: 0.85rem; cursor: pointer;">Book Now</button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== USE CASES ===================== -->
+  <section class="page-usecases">
+    <div class="container">
+      <div class="section-label fade-up">Real Scenarios</div>
+      <h2 class="section-title fade-up">
+        Built for <span class="gradient-text">How You Work</span>
+      </h2>
+      <div class="page-usecases__grid" style="margin-top: 48px;">
+
+        <div class="page-usecase fade-up">
+          <div class="page-usecase__icon">👥</div>
+          <div>
+            <h4>Growing Teams</h4>
+            <p>Add new tutors in minutes, they set availability and start taking bookings immediately.</p>
+          </div>
+        </div>
+
+        <div class="page-usecase fade-up">
+          <div class="page-usecase__icon">🌏</div>
+          <div>
+            <h4>Global Students</h4>
+            <p>A student in Tokyo books with a tutor in Nairobi — timezone handled automatically.</p>
+          </div>
+        </div>
+
+        <div class="page-usecase fade-up">
+          <div class="page-usecase__icon">✅</div>
+          <div>
+            <h4>Reducing No-shows</h4>
+            <p>Automated email + SMS reminders 24hrs and 1hr before every lesson.</p>
+          </div>
+        </div>
+
+        <div class="page-usecase fade-up">
+          <div class="page-usecase__icon">📦</div>
+          <div>
+            <h4>Package Sales</h4>
+            <p>Sell 10-lesson packages, track remaining credits, auto-remind to re-purchase.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE CTA ===================== -->
+  <section class="page-cta">
+    <div class="container">
+      <div class="section-label fade-up" style="color: rgba(255,255,255,0.5);">Next Step</div>
+      <h2 class="section-title section-title--light fade-up">
+        Ready to automate your <span class="gradient-text">scheduling</span>?
+      </h2>
+      <p class="section-desc section-desc--light fade-up">
+        Let your students book lessons 24/7 while you focus on what matters — teaching.
+      </p>
+      <div class="page-cta__actions fade-up">
+        <a href="index.html#cta" class="btn btn--primary btn--large">Let's Talk</a>
+        <a href="index.html#ecosystem" class="btn btn--outline btn--large">View All Solutions</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__brand">
+          <span class="nav__logo-icon">S</span>
+          <span>Soma Languages</span>
+          <span class="footer__x">&times;</span>
+          <span class="cta-partner__t" style="width:28px;height:28px;font-size:12px">T</span>
+          <span>Tradefiti</span>
+        </div>
+        <p class="footer__copy">This proposal is confidential and prepared exclusively for Soma Languages. &copy; 2026 Tradefiti.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

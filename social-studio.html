@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Media Studio — Soma Languages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+  <style>
+    /* ---- Studio-specific Layout ---- */
+    body { background: #0a0e1a; overflow: hidden; height: 100vh; }
+
+    .studio { display: grid; grid-template-columns: 280px 1fr 340px; grid-template-rows: 56px 1fr; height: 100vh; }
+
+    /* ---- Top Bar ---- */
+    .studio-topbar {
+      grid-column: 1 / -1;
+      background: #0d1220;
+      border-bottom: 1px solid #1a2236;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 16px;
+      z-index: 10;
+    }
+    .studio-topbar__logo {
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 600; color: #fff; font-size: 0.9rem;
+      text-decoration: none;
+    }
+    .studio-topbar__logo .nav__logo-icon {
+      width: 30px; height: 30px; font-size: 0.9rem; border-radius: 8px;
+    }
+    .studio-topbar__title {
+      font-size: 0.85rem; color: #94a3b8; font-weight: 400;
+      padding-left: 16px; border-left: 1px solid #1a2236;
+    }
+    .studio-topbar__count {
+      margin-left: auto;
+      font-size: 0.8rem; color: #c9a84c; font-weight: 600;
+      background: rgba(201,168,76,0.1); padding: 4px 12px; border-radius: 100px;
+    }
+    .studio-topbar__back {
+      display: flex; align-items: center; gap: 6px;
+      color: #94a3b8; font-size: 0.8rem; font-weight: 500;
+      text-decoration: none; transition: 0.3s;
+      margin-left: 16px;
+    }
+    .studio-topbar__back:hover { color: #c9a84c; }
+
+    /* ---- Sidebar ---- */
+    .studio-sidebar {
+      background: #0d1220;
+      border-right: 1px solid #1a2236;
+      overflow-y: auto;
+      padding: 0;
+    }
+    .studio-sidebar::-webkit-scrollbar { width: 4px; }
+    .studio-sidebar::-webkit-scrollbar-thumb { background: #1a2236; border-radius: 4px; }
+
+    .studio-tabs {
+      display: flex; gap: 6px; padding: 16px 16px 12px;
+      border-bottom: 1px solid #1a2236;
+      position: sticky; top: 0; background: #0d1220; z-index: 2;
+    }
+    .studio-tab {
+      padding: 5px 14px; border-radius: 100px;
+      font-size: 0.75rem; font-weight: 600; cursor: pointer;
+      background: transparent; border: 1px solid #1a2236;
+      color: #94a3b8; transition: 0.3s;
+    }
+    .studio-tab--active {
+      background: #c9a84c; border-color: #c9a84c; color: #0a0e1a;
+    }
+
+    .studio-sidebar__section {
+      padding: 16px;
+    }
+    .studio-sidebar__label {
+      font-size: 0.65rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 2px; color: #4b5563; margin-bottom: 12px;
+    }
+    .studio-sidebar__list {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .studio-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border-radius: 8px; cursor: pointer;
+      transition: 0.2s; border: none; background: none;
+      text-align: left; width: 100%;
+    }
+    .studio-item:hover { background: rgba(255,255,255,0.04); }
+    .studio-item--active { background: rgba(201,168,76,0.1); }
+    .studio-item__dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      flex-shrink: 0; opacity: 0.5;
+    }
+    .studio-item--active .studio-item__dot { opacity: 1; }
+    .studio-item__name {
+      font-size: 0.82rem; color: #e8ecf4; font-weight: 500;
+      flex: 1;
+    }
+    .studio-item--active .studio-item__name { color: #c9a84c; }
+    .studio-item__size {
+      font-size: 0.65rem; color: #4b5563; font-weight: 500;
+    }
+
+    /* ---- Main Preview ---- */
+    .studio-main {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 32px;
+      background: #080c16; position: relative;
+      overflow: hidden;
+    }
+    .studio-main__toolbar {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 24px;
+    }
+    .studio-toggle-group {
+      display: flex; background: #1a2236; border-radius: 8px;
+      overflow: hidden; border: 1px solid #252d42;
+    }
+    .studio-toggle {
+      padding: 6px 14px; font-size: 0.75rem; font-weight: 600;
+      color: #94a3b8; cursor: pointer; transition: 0.2s;
+      border: none; background: none; display: flex;
+      align-items: center; gap: 5px;
+    }
+    .studio-toggle--active {
+      background: #252d42; color: #fff;
+    }
+    .studio-toggle__dot {
+      width: 6px; height: 6px; border-radius: 50%;
+    }
+
+    /* ---- Poster ---- */
+    .studio-poster {
+      width: 440px; aspect-ratio: 1/1;
+      border-radius: 12px; overflow: hidden;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.5);
+      transition: aspect-ratio 0.4s ease, width 0.4s ease;
+      position: relative;
+    }
+    .studio-poster--portrait {
+      aspect-ratio: 4/5; width: 380px;
+    }
+    .studio-poster--story {
+      aspect-ratio: 9/16; width: 280px;
+    }
+
+    .poster-content {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      padding: 40px;
+      position: relative; overflow: hidden;
+      transition: background 0.4s ease;
+    }
+    .poster-content--dark {
+      background: linear-gradient(160deg, #0a1628 0%, #111d35 50%, #162040 100%);
+    }
+    .poster-content--light {
+      background: linear-gradient(160deg, #f8f9ff 0%, #eef1ff 50%, #e8ecf4 100%);
+    }
+    .poster-content--light .poster-brand,
+    .poster-content--light .poster-headline,
+    .poster-content--light .poster-points li {
+      color: #0a1628;
+    }
+    .poster-content--light .poster-badge {
+      background: rgba(10,22,40,0.08); color: #0a1628;
+    }
+    .poster-content--light .poster-url { color: #6b7280; }
+    .poster-content--light .poster-points li::before { color: #c9a84c; }
+
+    .poster-decor {
+      position: absolute; top: -60px; right: -60px;
+      width: 200px; height: 200px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.08), transparent);
+      pointer-events: none;
+    }
+    .poster-decor-2 {
+      position: absolute; bottom: -40px; left: -40px;
+      width: 160px; height: 160px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(45,91,255,0.06), transparent);
+      pointer-events: none;
+    }
+
+    .poster-top { position: relative; z-index: 1; }
+    .poster-brand {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 1rem; font-weight: 600; color: #fff;
+      margin-bottom: 24px;
+    }
+    .poster-brand__icon {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, #c9a84c, #e3c97a);
+      border-radius: 7px; display: flex; align-items: center;
+      justify-content: center; font-family: 'Playfair Display', serif;
+      font-size: 0.8rem; font-weight: 700; color: #0a1628;
+    }
+    .poster-badge {
+      display: inline-block;
+      background: rgba(201,168,76,0.15);
+      color: #c9a84c; font-size: 0.55rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2.5px;
+      padding: 6px 14px; border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    .poster-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem; font-weight: 700;
+      line-height: 1.25; color: #fff;
+      margin-bottom: 0;
+      transition: 0.3s;
+    }
+    .poster-headline .highlight {
+      background: linear-gradient(135deg, #c9a84c, #e3c97a);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .poster-bottom { position: relative; z-index: 1; }
+    .poster-points {
+      list-style: none; margin-bottom: 24px;
+    }
+    .poster-points li {
+      font-size: 0.8rem; color: #e8ecf4;
+      padding: 4px 0; display: flex; align-items: flex-start; gap: 8px;
+      line-height: 1.4;
+    }
+    .poster-points li::before {
+      content: '→'; color: #c9a84c; font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .poster-cta {
+      display: inline-block;
+      background: linear-gradient(135deg, #c9a84c, #e3c97a);
+      color: #0a1628; font-size: 0.75rem; font-weight: 700;
+      padding: 10px 24px; border-radius: 100px;
+      margin-bottom: 12px;
+    }
+    .poster-url {
+      font-size: 0.65rem; color: #94a3b8;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .poster-url::before {
+      content: ''; width: 12px; height: 12px;
+      border: 1.5px solid currentColor; border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* ---- Caption Panel ---- */
+    .studio-caption {
+      background: #0d1220;
+      border-left: 1px solid #1a2236;
+      display: flex; flex-direction: column;
+      overflow-y: auto;
+    }
+    .studio-caption::-webkit-scrollbar { width: 4px; }
+    .studio-caption::-webkit-scrollbar-thumb { background: #1a2236; border-radius: 4px; }
+
+    .studio-caption__header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid #1a2236;
+    }
+    .studio-caption__label {
+      font-size: 0.75rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 1.5px;
+      color: #4b5563;
+    }
+    .studio-caption__copy {
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2);
+      color: #c9a84c; font-size: 0.75rem; font-weight: 600;
+      padding: 5px 14px; border-radius: 6px; cursor: pointer;
+      transition: 0.2s;
+    }
+    .studio-caption__copy:hover {
+      background: rgba(201,168,76,0.2);
+    }
+    .studio-caption__body {
+      flex: 1; padding: 20px;
+    }
+    .studio-caption__text {
+      font-size: 0.85rem; color: #e8ecf4; line-height: 1.7;
+      margin-bottom: 16px; white-space: pre-wrap;
+    }
+    .studio-caption__hashtags {
+      font-size: 0.8rem; color: #5b7fff; font-weight: 500;
+      margin-bottom: 16px;
+    }
+    .studio-caption__count {
+      font-size: 0.75rem; color: #4b5563;
+    }
+
+    .studio-caption__footer {
+      padding: 16px 20px;
+      border-top: 1px solid #1a2236;
+    }
+    .studio-caption__format {
+      display: flex; gap: 8px; margin-bottom: 12px;
+    }
+    .studio-format-opt {
+      flex: 1; padding: 6px 8px; border-radius: 6px;
+      font-size: 0.65rem; font-weight: 600; text-align: center;
+      border: 1px solid #1a2236; color: #94a3b8;
+      background: transparent; cursor: pointer; transition: 0.2s;
+    }
+    .studio-format-opt--active {
+      border-color: #c9a84c; color: #c9a84c;
+      background: rgba(201,168,76,0.08);
+    }
+    .studio-download {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; width: 100%; padding: 12px;
+      background: linear-gradient(135deg, #c9a84c, #e3c97a);
+      color: #0a1628; font-size: 0.85rem; font-weight: 700;
+      border: none; border-radius: 8px; cursor: pointer;
+      transition: 0.3s;
+    }
+    .studio-download:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+    }
+
+    /* ---- Showcase Banner ---- */
+    .studio-showcase {
+      grid-column: 1 / -1;
+      background: linear-gradient(90deg, rgba(201,168,76,0.05), rgba(45,91,255,0.05));
+      border-top: 1px solid #1a2236;
+      padding: 0;
+      display: none; /* Hidden in studio mode, visible in showcase */
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 1100px) {
+      .studio { grid-template-columns: 240px 1fr 300px; }
+      .studio-poster { width: 360px; }
+      .poster-headline { font-size: 1.4rem; }
+      .poster-content { padding: 28px; }
+    }
+    @media (max-width: 900px) {
+      body { overflow-y: auto; height: auto; }
+      .studio {
+        grid-template-columns: 1fr;
+        grid-template-rows: 56px auto auto auto;
+        height: auto; min-height: 100vh;
+      }
+      .studio-sidebar {
+        border-right: none; border-bottom: 1px solid #1a2236;
+        max-height: 200px;
+      }
+      .studio-sidebar__list { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+      .studio-item { padding: 6px 10px; }
+      .studio-main { padding: 24px 16px; min-height: 500px; }
+      .studio-poster { width: min(360px, 90vw); }
+      .studio-caption { border-left: none; border-top: 1px solid #1a2236; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="studio">
+
+    <!-- ---- Top Bar ---- -->
+    <div class="studio-topbar">
+      <a href="index.html" class="studio-topbar__logo">
+        <span class="nav__logo-icon">S</span>
+        <span>Soma Languages</span>
+      </a>
+      <span class="studio-topbar__title">Social Media Studio</span>
+      <span class="studio-topbar__count">45 posts</span>
+      <a href="index.html" class="studio-topbar__back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to Proposal
+      </a>
+    </div>
+
+    <!-- ---- Sidebar ---- -->
+    <div class="studio-sidebar">
+      <div class="studio-tabs">
+        <button class="studio-tab studio-tab--active" data-filter="all">All</button>
+        <button class="studio-tab" data-filter="grammar">Grammar</button>
+        <button class="studio-tab" data-filter="vocab">Vocab</button>
+        <button class="studio-tab" data-filter="speaking">Speaking</button>
+      </div>
+      <div class="studio-sidebar__section">
+        <div class="studio-sidebar__label">Content Library (45)</div>
+        <div class="studio-sidebar__list" id="contentList">
+          <!-- Generated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ---- Main Preview ---- -->
+    <div class="studio-main">
+      <div class="studio-main__toolbar">
+        <div class="studio-toggle-group">
+          <button class="studio-toggle" data-theme="light">
+            <span class="studio-toggle__dot" style="background:#fff"></span> Light
+          </button>
+          <button class="studio-toggle studio-toggle--active" data-theme="dark">
+            <span class="studio-toggle__dot" style="background:#0a1628"></span> Dark
+          </button>
+        </div>
+        <div class="studio-toggle-group" id="formatGroup">
+          <button class="studio-toggle studio-toggle--active" data-format="square">⬜ 1:1</button>
+          <button class="studio-toggle" data-format="portrait">▯ 4:5</button>
+          <button class="studio-toggle" data-format="story">▮ 9:16</button>
+        </div>
+      </div>
+
+      <div class="studio-poster" id="posterFrame">
+        <div class="poster-content poster-content--dark" id="posterContent">
+          <div class="poster-decor"></div>
+          <div class="poster-decor-2"></div>
+          <div class="poster-top">
+            <div class="poster-brand">
+              <span class="poster-brand__icon">S</span>
+              Soma Languages
+            </div>
+            <div class="poster-badge" id="posterBadge">GRAMMAR TIPS</div>
+            <h2 class="poster-headline" id="posterHeadline">
+              Stop saying<br>"I'm fine!"<br>Try <span class="highlight">these instead.</span>
+            </h2>
+          </div>
+          <div class="poster-bottom">
+            <ul class="poster-points" id="posterPoints">
+              <li>"I'm doing great, thanks!"</li>
+              <li>"Not too bad, how about you?"</li>
+              <li>"I've been better, honestly"</li>
+              <li>"Pretty good! Busy week though"</li>
+            </ul>
+            <div class="poster-cta">Learn More →</div>
+            <div class="poster-url">somalanguages.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---- Caption Panel ---- -->
+    <div class="studio-caption">
+      <div class="studio-caption__header">
+        <span class="studio-caption__label">Instagram Caption</span>
+        <button class="studio-caption__copy" id="copyBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy
+        </button>
+      </div>
+      <div class="studio-caption__body">
+        <div class="studio-caption__text" id="captionText">Everyone says "I'm fine" — but native speakers almost never do. 😅
+
+Here are 4 natural alternatives that will instantly make you sound more fluent:
+
+→ "I'm doing great, thanks!"
+→ "Not too bad, how about you?"
+→ "I've been better, honestly"
+→ "Pretty good! Busy week though"
+
+Try one of these in your next English conversation and watch the difference. 🔥
+
+Save this post for later! 📌</div>
+        <div class="studio-caption__hashtags" id="captionHashtags">#ESL #EnglishTips #LearnEnglish #SomaLanguages #EnglishFluency #SpeakEnglish</div>
+        <div class="studio-caption__count" id="captionCount">328 / 2,200</div>
+      </div>
+      <div class="studio-caption__footer">
+        <div class="studio-caption__format">
+          <button class="studio-format-opt studio-format-opt--active">PNG (Lossless)</button>
+          <button class="studio-format-opt">JPG (Small)</button>
+        </div>
+        <button class="studio-download">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Download Poster
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    /* ============================================================
+       SOCIAL MEDIA STUDIO — Interactive Poster Generator
+       ============================================================ */
+
+    const posterData = [
+      {
+        id: 'fine-alternatives',
+        name: 'Stop Saying "I\'m Fine"',
+        category: 'speaking',
+        color: '#c9a84c',
+        badge: 'SPEAKING TIPS',
+        headline: 'Stop saying<br>"I\'m fine!"<br>Try <span class="highlight">these instead.</span>',
+        points: ['"I\'m doing great, thanks!"', '"Not too bad, how about you?"', '"I\'ve been better, honestly"', '"Pretty good! Busy week though"'],
+        caption: 'Everyone says "I\'m fine" — but native speakers almost never do. 😅\n\nHere are 4 natural alternatives that will instantly make you sound more fluent:\n\n→ "I\'m doing great, thanks!"\n→ "Not too bad, how about you?"\n→ "I\'ve been better, honestly"\n→ "Pretty good! Busy week though"\n\nTry one of these in your next English conversation and watch the difference. 🔥\n\nSave this post for later! 📌',
+        hashtags: '#ESL #EnglishTips #LearnEnglish #SomaLanguages #EnglishFluency #SpeakEnglish'
+      },
+      {
+        id: 'agree-grammar',
+        name: 'I Am Agree (Common Error)',
+        category: 'grammar',
+        color: '#5b7fff',
+        badge: 'GRAMMAR FIX',
+        headline: 'Stop saying<br>"I am agree"<br>Here\'s <span class="highlight">why.</span>',
+        points: ['"Agree" is already a verb — no "am" needed', 'Correct: "I agree with you"', 'Common mistake for Spanish & Arabic speakers', 'Practice: "I agree that this is important"'],
+        caption: '"I am agree" is one of the most common mistakes I see every week. 🙈\n\nThe fix is simple: "agree" is already a verb, so it doesn\'t need "am" before it.\n\n❌ I am agree with you\n✅ I agree with you\n\n❌ She is agree\n✅ She agrees\n\nThis happens because in many languages, "agree" works like an adjective. In English, it\'s a verb — treat it like one!\n\nTag someone who needs this tip! 👇',
+        hashtags: '#GrammarTips #EnglishGrammar #ESL #CommonMistakes #SomaLanguages #LearnEnglish'
+      },
+      {
+        id: 'email-phrases',
+        name: 'Professional Email Phrases',
+        category: 'vocab',
+        color: '#10b981',
+        badge: 'BUSINESS ENGLISH',
+        headline: '5 phrases that make<br>your emails sound<br><span class="highlight">professional.</span>',
+        points: ['"I hope this message finds you well"', '"Please find attached..."', '"I\'d appreciate your feedback on..."', '"Looking forward to hearing from you"'],
+        caption: 'Your emails say a lot about your English level. ✉️\n\nHere are 5 phrases that instantly make you sound more professional:\n\n→ "I hope this message finds you well"\n→ "Please find attached..."\n→ "I\'d appreciate your feedback on..."\n→ "Looking forward to hearing from you"\n→ "Please don\'t hesitate to reach out"\n\nWhich one will you use in your next email? 💬\n\nSave this for your next important email! 📌',
+        hashtags: '#BusinessEnglish #EmailTips #ProfessionalEnglish #SomaLanguages #EnglishForWork'
+      },
+      {
+        id: 'interview-tips',
+        name: 'Ace Your Job Interview',
+        category: 'speaking',
+        color: '#a855f7',
+        badge: 'INTERVIEW PREP',
+        headline: 'How to answer<br>"Tell me about yourself"<br><span class="highlight">like a pro.</span>',
+        points: ['Start with your current role or study', 'Mention 1-2 key achievements', 'Connect your experience to THIS job', 'Keep it under 90 seconds'],
+        caption: '"Tell me about yourself" is the #1 interview question — and most people get it wrong. 😬\n\nHere\'s the formula that works every time:\n\n1️⃣ Present: What you do now\n2️⃣ Past: 1-2 relevant achievements\n3️⃣ Future: Why THIS role excites you\n\nKeep it under 90 seconds. Practice until it feels natural.\n\nExample: "I\'m currently a marketing coordinator at... Previously, I led a campaign that... I\'m excited about this role because..."\n\nSave this for your next interview! 🔥',
+        hashtags: '#JobInterview #InterviewTips #EnglishForWork #SomaLanguages #CareerTips'
+      },
+      {
+        id: 'prepositions',
+        name: 'Tricky Prepositions',
+        category: 'grammar',
+        color: '#ef4444',
+        badge: 'GRAMMAR TIPS',
+        headline: 'IN, ON, or AT?<br>The preposition guide<br>you <span class="highlight">actually need.</span>',
+        points: ['IN → months, years, cities (in March, in 2026)', 'ON → days, dates, surfaces (on Monday)', 'AT → specific times, places (at 3pm, at home)', 'Exceptions exist — but these cover 90%'],
+        caption: 'Prepositions are the #1 thing that makes English learners hesitate mid-sentence. 😤\n\nHere\'s the simple rule that covers 90% of cases:\n\n📍 IN → big areas, months, years\n"I live in Nairobi" / "in March" / "in 2026"\n\n📍 ON → surfaces, days, dates\n"on the table" / "on Monday" / "on March 25th"\n\n📍 AT → specific points\n"at 3pm" / "at home" / "at the restaurant"\n\nYes, there are exceptions. But master these first.\n\nWhich one confuses you the most? 👇',
+        hashtags: '#EnglishGrammar #Prepositions #GrammarTips #SomaLanguages #ESL #LearnEnglish'
+      },
+      {
+        id: 'phrasal-verbs',
+        name: 'Essential Phrasal Verbs',
+        category: 'vocab',
+        color: '#f59e0b',
+        badge: 'VOCABULARY',
+        headline: '10 phrasal verbs<br>native speakers<br>use <span class="highlight">every day.</span>',
+        points: ['Figure out = understand/solve', 'Bring up = mention a topic', 'Look into = investigate/research', 'Come across = find by chance'],
+        caption: 'Phrasal verbs are the secret to sounding natural in English. 🔑\n\nHere are 10 that native speakers use DAILY:\n\n1. Figure out → understand\n2. Bring up → mention a topic\n3. Look into → investigate\n4. Come across → find by chance\n5. Turn out → result in\n6. Point out → indicate\n7. End up → finally arrive at\n8. Put off → postpone\n9. Run into → meet unexpectedly\n10. Work out → solve / exercise\n\nWhich ones do you already use? 💬',
+        hashtags: '#PhrasalVerbs #EnglishVocabulary #NaturalEnglish #SomaLanguages #ESL'
+      },
+      {
+        id: 'pronunciation-mistakes',
+        name: 'Words You Mispronounce',
+        category: 'speaking',
+        color: '#ec4899',
+        badge: 'PRONUNCIATION',
+        headline: 'You\'re probably<br>mispronouncing<br><span class="highlight">these 5 words.</span>',
+        points: ['Wednesday → "WENZ-day" (not Wed-NES-day)', 'Comfortable → "KUMF-ter-bul" (3 syllables!)', 'Vegetable → "VEJ-tuh-bul" (not vege-TABLE)', 'Interesting → "IN-trest-ing" (3 syllables)'],
+        caption: 'Even advanced English speakers mispronounce these. 🎤\n\n1. Wednesday → WENZ-day (silent D-N-E)\n2. Comfortable → KUMF-ter-bul (3 syllables, not 4)\n3. Vegetable → VEJ-tuh-bul (3 syllables)\n4. Interesting → IN-trest-ing (3 syllables, not 4)\n5. Clothes → KLOHZ (one syllable! Like "close")\n\nThe pattern? English drops syllables in everyday speech.\n\nWhich one surprised you? Comment below! 👇',
+        hashtags: '#Pronunciation #EnglishPronunciation #SpeakEnglish #SomaLanguages #ESLTips'
+      },
+      {
+        id: 'meeting-phrases',
+        name: 'Phrases for Meetings',
+        category: 'vocab',
+        color: '#06b6d4',
+        badge: 'BUSINESS ENGLISH',
+        headline: 'Sound confident<br>in English meetings<br>with <span class="highlight">these phrases.</span>',
+        points: ['"I\'d like to add something here..."', '"Could you elaborate on that?"', '"Let me circle back to the main point"', '"I think we\'re all on the same page"'],
+        caption: 'Feel nervous speaking English in meetings? These phrases will change that. 💼\n\n→ To share your opinion:\n"I\'d like to add something here..."\n\n→ To ask for more info:\n"Could you elaborate on that?"\n\n→ To refocus the discussion:\n"Let me circle back to the main point"\n\n→ To confirm agreement:\n"I think we\'re all on the same page"\n\nPractice these before your next meeting. Confidence comes from preparation. 🔥',
+        hashtags: '#BusinessEnglish #MeetingSkills #ProfessionalEnglish #SomaLanguages #CorporateEnglish'
+      },
+      {
+        id: 'tenses-simplified',
+        name: 'Tenses Made Simple',
+        category: 'grammar',
+        color: '#8b5cf6',
+        badge: 'GRAMMAR GUIDE',
+        headline: 'English tenses<br>explained in<br><span class="highlight">30 seconds.</span>',
+        points: ['Past Simple = finished action (I ate)', 'Present Perfect = past → now connection (I\'ve eaten)', 'Past Continuous = background action (I was eating)', 'Used to = old habit (I used to eat there)'],
+        caption: 'Tenses don\'t have to be confusing. Here\'s the simplest explanation: ⏰\n\n🔵 Past Simple → done, finished\n"I ate breakfast"\n\n🟢 Present Perfect → connects past to now\n"I\'ve eaten already" (so I\'m not hungry NOW)\n\n🟡 Past Continuous → background/interrupted\n"I was eating when you called"\n\n🔴 Used to → old habit, not anymore\n"I used to eat there every day"\n\nThe key? Think about WHEN and WHY it matters NOW.\n\nSave this cheat sheet! 📌',
+        hashtags: '#EnglishTenses #GrammarSimplified #ESL #SomaLanguages #EnglishGrammar'
+      },
+      {
+        id: 'small-talk',
+        name: 'Master Small Talk',
+        category: 'speaking',
+        color: '#14b8a6',
+        badge: 'CONVERSATION',
+        headline: 'Small talk isn\'t small.<br>It\'s how you build<br><span class="highlight">real connections.</span>',
+        points: ['Ask open questions: "What do you do for fun?"', 'React genuinely: "Oh really? Tell me more!"', 'Find common ground: "I love that too!"', 'Exit gracefully: "It was great chatting!"'],
+        caption: 'Small talk is the #1 skill that separates "good English" from "great English." 🗣️\n\nIt\'s not about the weather. It\'s about connection.\n\n4 rules for natural small talk:\n\n1️⃣ Ask OPEN questions (not yes/no)\n"What do you do for fun?" > "Do you have hobbies?"\n\n2️⃣ React with energy\n"Oh really? Tell me more!"\n\n3️⃣ Find common ground\n"I love that too! Have you tried...?"\n\n4️⃣ Exit gracefully\n"It was really great chatting with you!"\n\nPractice with a friend this week! 🔥',
+        hashtags: '#SmallTalk #EnglishConversation #SpeakNaturally #SomaLanguages #Fluency'
+      }
+    ];
+
+    // State
+    let currentPoster = 0;
+    let currentTheme = 'dark';
+    let currentFormat = 'square';
+
+    // DOM
+    const contentList = document.getElementById('contentList');
+    const posterBadge = document.getElementById('posterBadge');
+    const posterHeadline = document.getElementById('posterHeadline');
+    const posterPoints = document.getElementById('posterPoints');
+    const posterContent = document.getElementById('posterContent');
+    const posterFrame = document.getElementById('posterFrame');
+    const captionText = document.getElementById('captionText');
+    const captionHashtags = document.getElementById('captionHashtags');
+    const captionCount = document.getElementById('captionCount');
+    const copyBtn = document.getElementById('copyBtn');
+
+    // Build sidebar
+    function renderSidebar(filter = 'all') {
+      contentList.innerHTML = '';
+      posterData.forEach((item, i) => {
+        if (filter !== 'all' && item.category !== filter) return;
+        const btn = document.createElement('button');
+        btn.className = `studio-item${i === currentPoster ? ' studio-item--active' : ''}`;
+        btn.innerHTML = `
+          <span class="studio-item__dot" style="background:${item.color}"></span>
+          <span class="studio-item__name">${item.name}</span>
+          <span class="studio-item__size">1200</span>
+        `;
+        btn.onclick = () => selectPoster(i);
+        contentList.appendChild(btn);
+      });
+    }
+
+    // Select a poster
+    function selectPoster(index) {
+      currentPoster = index;
+      const p = posterData[index];
+      posterBadge.textContent = p.badge;
+      posterHeadline.innerHTML = p.headline;
+      posterPoints.innerHTML = p.points.map(pt => `<li>${pt}</li>`).join('');
+      captionText.textContent = p.caption;
+      captionHashtags.textContent = p.hashtags;
+      captionCount.textContent = `${p.caption.length} / 2,200`;
+      renderSidebar(document.querySelector('.studio-tab--active').dataset.filter);
+    }
+
+    // Theme toggle
+    document.querySelectorAll('[data-theme]').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('[data-theme]').forEach(b => b.classList.remove('studio-toggle--active'));
+        btn.classList.add('studio-toggle--active');
+        currentTheme = btn.dataset.theme;
+        posterContent.className = `poster-content poster-content--${currentTheme}`;
+      };
+    });
+
+    // Format toggle
+    document.querySelectorAll('[data-format]').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('[data-format]').forEach(b => b.classList.remove('studio-toggle--active'));
+        btn.classList.add('studio-toggle--active');
+        posterFrame.className = 'studio-poster';
+        if (btn.dataset.format === 'portrait') posterFrame.classList.add('studio-poster--portrait');
+        if (btn.dataset.format === 'story') posterFrame.classList.add('studio-poster--story');
+      };
+    });
+
+    // Category tabs
+    document.querySelectorAll('.studio-tab').forEach(tab => {
+      tab.onclick = () => {
+        document.querySelectorAll('.studio-tab').forEach(t => t.classList.remove('studio-tab--active'));
+        tab.classList.add('studio-tab--active');
+        renderSidebar(tab.dataset.filter);
+      };
+    });
+
+    // Copy caption
+    copyBtn.onclick = () => {
+      const text = captionText.textContent + '\n\n' + captionHashtags.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        copyBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Copied!';
+        setTimeout(() => {
+          copyBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy';
+        }, 2000);
+      });
+    };
+
+    // Init
+    renderSidebar();
+  </script>
+
+</body>
+</html>
