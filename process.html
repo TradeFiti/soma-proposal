@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Process & Timeline — Soma Languages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+
+  <style>
+    /* ---- Process Timeline ---- */
+    .process-timeline {
+      padding: 80px 0;
+      background: var(--white);
+      position: relative;
+    }
+    .process-timeline__header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .process-timeline__list {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    /* Vertical connector line */
+    .process-timeline__list::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 40px;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(
+        180deg,
+        var(--accent) 0%,
+        var(--primary) 33%,
+        var(--success) 66%,
+        #a855f7 100%
+      );
+      border-radius: 3px;
+    }
+
+    .phase-card {
+      position: relative;
+      margin-bottom: 48px;
+      margin-left: 80px;
+      padding: 36px 32px 32px;
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--accent);
+      border-radius: var(--radius);
+      transition: 0.3s;
+    }
+    .phase-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-left-color: var(--accent-light);
+    }
+    .phase-card--phase0 { border-left-color: var(--accent); }
+    .phase-card--phase1 { border-left-color: var(--primary); }
+    .phase-card--phase2 { border-left-color: var(--success); }
+    .phase-card--phase3 { border-left-color: #a855f7; }
+
+    .phase-card:hover.phase-card--phase0 { border-left-color: var(--accent-light); }
+    .phase-card:hover.phase-card--phase1 { border-left-color: var(--primary-light); }
+    .phase-card:hover.phase-card--phase2 { border-left-color: #34d399; }
+    .phase-card:hover.phase-card--phase3 { border-left-color: #c084fc; }
+
+    /* Timeline dot */
+    .phase-card__dot {
+      position: absolute;
+      left: -56px;
+      top: 36px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      z-index: 2;
+      border: 3px solid var(--white);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+    .phase-card--phase0 .phase-card__dot { background: var(--accent); }
+    .phase-card--phase1 .phase-card__dot { background: var(--primary); }
+    .phase-card--phase2 .phase-card__dot { background: var(--success); }
+    .phase-card--phase3 .phase-card__dot { background: #a855f7; }
+
+    .phase-card__header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .phase-card__icon {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+    .phase-card__title-group {
+      flex: 1;
+      min-width: 200px;
+    }
+    .phase-card__phase-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+    .phase-card__title {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .phase-card__weeks {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(201,168,76,0.08);
+      color: var(--accent);
+      border: 1px solid rgba(201,168,76,0.2);
+      white-space: nowrap;
+    }
+
+    .phase-card__tasks {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+    .phase-card__tasks li {
+      position: relative;
+      padding: 6px 0 6px 24px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .phase-card__tasks li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 14px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+    .phase-card--phase0 .phase-card__tasks li::before { background: rgba(201,168,76,0.4); }
+    .phase-card--phase1 .phase-card__tasks li::before { background: rgba(45,91,255,0.4); }
+    .phase-card--phase2 .phase-card__tasks li::before { background: rgba(16,185,129,0.4); }
+    .phase-card--phase3 .phase-card__tasks li::before { background: rgba(168,85,247,0.4); }
+
+    .phase-card__footer {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .phase-card__deliverable,
+    .phase-card__milestone {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .phase-card__deliverable {
+      background: rgba(45,91,255,0.06);
+      color: var(--primary);
+      border: 1px solid rgba(45,91,255,0.15);
+    }
+    .phase-card__milestone {
+      background: rgba(16,185,129,0.06);
+      color: var(--success);
+      border: 1px solid rgba(16,185,129,0.15);
+    }
+
+    /* ---- Weekly Rhythm Section (dark) ---- */
+    .weekly-rhythm {
+      padding: 80px 0;
+      background: linear-gradient(160deg, var(--dark), var(--dark-2));
+    }
+    .weekly-rhythm__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .weekly-rhythm__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .rhythm-card {
+      padding: 28px 24px;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-dark);
+      text-align: center;
+      transition: 0.3s;
+    }
+    .rhythm-card:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(201,168,76,0.3);
+      transform: translateY(-4px);
+    }
+    .rhythm-card__day {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .rhythm-card__icon {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+    .rhythm-card__title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .rhythm-card__desc {
+      font-size: 0.82rem;
+      color: var(--text-white-muted);
+      line-height: 1.5;
+    }
+
+    /* ---- Involvement Section (light) ---- */
+    .involvement {
+      padding: 80px 0;
+      background: var(--white);
+    }
+    .involvement__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .involvement__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto 32px;
+    }
+    .involvement-item {
+      display: flex;
+      gap: 16px;
+      padding: 24px;
+      border-radius: var(--radius);
+      background: var(--light);
+      border: 1px solid var(--border);
+      transition: 0.3s;
+    }
+    .involvement-item:hover {
+      border-color: rgba(201,168,76,0.3);
+      box-shadow: var(--shadow);
+    }
+    .involvement-item__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(201,168,76,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+    .involvement-item__title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .involvement-item__desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .involvement__note {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px 28px;
+      border-radius: var(--radius);
+      background: rgba(201,168,76,0.06);
+      border: 1px solid rgba(201,168,76,0.15);
+      font-size: 0.9rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ---- QA Section (dark) ---- */
+    .qa-section {
+      padding: 80px 0;
+      background: linear-gradient(160deg, var(--dark), var(--dark-2));
+    }
+    .qa-section__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .qa-section__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .qa-item {
+      padding: 28px 24px;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-dark);
+      text-align: center;
+      transition: 0.3s;
+    }
+    .qa-item:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(201,168,76,0.3);
+      transform: translateY(-4px);
+    }
+    .qa-item__icon {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+    .qa-item__title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .qa-item__desc {
+      font-size: 0.82rem;
+      color: var(--text-white-muted);
+      line-height: 1.5;
+    }
+
+    /* ---- Post-Launch Section (light) ---- */
+    .post-launch {
+      padding: 80px 0;
+      background: var(--white);
+    }
+    .post-launch__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .post-launch__timeline {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+    }
+    .support-card {
+      display: flex;
+      gap: 20px;
+      padding: 28px;
+      border-radius: var(--radius);
+      background: var(--light);
+      border: 1px solid var(--border);
+      transition: 0.3s;
+    }
+    .support-card:hover {
+      border-color: rgba(201,168,76,0.3);
+      box-shadow: var(--shadow);
+    }
+    .support-card__period {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 100px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--white);
+      text-align: center;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .support-card__period--m1 { background: var(--primary); }
+    .support-card__period--m4 { background: var(--success); }
+    .support-card__period--m7 { background: #a855f7; }
+    .support-card__period--always { background: var(--accent); color: var(--dark); }
+
+    .support-card__content {
+      flex: 1;
+    }
+    .support-card__title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .support-card__desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 768px) {
+      .process-timeline__list::before {
+        left: 20px;
+      }
+      .phase-card {
+        margin-left: 50px;
+        padding: 28px 20px 24px;
+      }
+      .phase-card__dot {
+        left: -42px;
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+      }
+      .weekly-rhythm__grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .involvement__grid {
+        grid-template-columns: 1fr;
+      }
+      .qa-section__grid {
+        grid-template-columns: 1fr;
+      }
+      .support-card {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .support-card__period {
+        min-width: auto;
+        align-self: flex-start;
+      }
+    }
+    @media (max-width: 480px) {
+      .weekly-rhythm__grid {
+        grid-template-columns: 1fr;
+      }
+      .phase-card__header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav class="nav" id="nav">
+    <div class="nav__container">
+      <a href="index.html" class="nav__logo">
+        <span class="nav__logo-icon">S</span>
+        <span class="nav__logo-text">Soma Languages</span>
+      </a>
+      <div class="nav__links">
+        <a href="index.html#about">About</a>
+        <a href="index.html#ecosystem">Solutions</a>
+        <a href="index.html#roadmap">Roadmap</a>
+        <a href="index.html#investment">Investment</a>
+        <a href="index.html#cta" class="nav__cta">Let's Talk</a>
+      </div>
+      <button class="nav__mobile-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Solutions Navigation -->
+  <div class="solutions-nav">
+    <div class="solutions-nav__inner">
+      <a href="index.html" class="solutions-nav__link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Proposal
+      </a>
+      <div class="solutions-nav__divider"></div>
+      <a href="platform.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#2d5bff"></span> Platform
+      </a>
+      <a href="ai.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#c9a84c"></span> SomaAI
+      </a>
+      <a href="booking.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#10b981"></span> Booking
+      </a>
+      <a href="mobile.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#a855f7"></span> Mobile App
+      </a>
+      <a href="marketing.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#ef4444"></span> Marketing
+      </a>
+      <a href="analytics.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#06b6d4"></span> Analytics
+      </a>
+      <div class="solutions-nav__divider"></div>
+      <a href="social-studio.html" class="solutions-nav__link solutions-nav__link--studio">
+        🎨 Social Studio
+      </a>
+    </div>
+  </div>
+
+  <!-- ===================== PAGE HERO ===================== -->
+  <section class="page-hero fade-up">
+    <div class="page-hero__decor page-hero__decor--1"></div>
+    <div class="page-hero__decor page-hero__decor--2"></div>
+    <div class="container">
+      <span class="page-hero__badge">Our Process</span>
+      <h1 class="page-hero__title">How We'll Build<br>Your <span class="gradient-text">Ecosystem</span></h1>
+      <p class="page-hero__subtitle">A proven, transparent process with weekly demos, your feedback at every step, and zero surprises. Here's exactly how it works.</p>
+      <div class="page-hero__nav">
+        <a href="index.html" class="page-nav-btn page-nav-btn--back">&larr; Back to Proposal</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== THE 4 PHASES ===================== -->
+  <section class="process-timeline fade-up">
+    <div class="container">
+      <div class="process-timeline__header">
+        <span class="section-label">Timeline</span>
+        <h2 class="section-title">The 4 Phases</h2>
+        <p class="section-desc">From discovery to launch day and beyond — a clear, structured path to your complete ecosystem.</p>
+      </div>
+
+      <div class="process-timeline__list">
+
+        <!-- Phase 0 -->
+        <div class="phase-card phase-card--phase0 fade-up">
+          <div class="phase-card__dot">0</div>
+          <div class="phase-card__header">
+            <span class="phase-card__icon">🔍</span>
+            <div class="phase-card__title-group">
+              <div class="phase-card__phase-label">Phase 0</div>
+              <h3 class="phase-card__title">Discovery & Strategy</h3>
+            </div>
+            <span class="phase-card__weeks">Week 0 - 1</span>
+          </div>
+          <ul class="phase-card__tasks">
+            <li>Deep dive into Soma's business model, student types, and growth goals</li>
+            <li>Audit of current website, social media, and operations</li>
+            <li>Competitive analysis of online language learning market</li>
+            <li>Define success metrics and KPIs</li>
+          </ul>
+          <div class="phase-card__footer">
+            <span class="phase-card__deliverable">📄 Strategy Document & Detailed Roadmap</span>
+          </div>
+        </div>
+
+        <!-- Phase 1 -->
+        <div class="phase-card phase-card--phase1 fade-up">
+          <div class="phase-card__dot">1</div>
+          <div class="phase-card__header">
+            <span class="phase-card__icon">🏗️</span>
+            <div class="phase-card__title-group">
+              <div class="phase-card__phase-label">Phase 1</div>
+              <h3 class="phase-card__title">Foundation</h3>
+            </div>
+            <span class="phase-card__weeks">Weeks 1 - 6</span>
+          </div>
+          <ul class="phase-card__tasks">
+            <li><strong>Week 1-2:</strong> Brand refresh & website redesign</li>
+            <li><strong>Week 2-3:</strong> Student portal & authentication</li>
+            <li><strong>Week 3-4:</strong> Booking system with multi-tutor support</li>
+            <li><strong>Week 4-5:</strong> Payment integration (Stripe + M-Pesa)</li>
+            <li><strong>Week 5-6:</strong> Email notifications & reminders</li>
+            <li><strong>Week 6:</strong> Testing, QA, soft launch</li>
+          </ul>
+          <div class="phase-card__footer">
+            <span class="phase-card__deliverable">🚀 Live platform with booking & payments</span>
+            <span class="phase-card__milestone">🎯 Students can self-serve</span>
+          </div>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="phase-card phase-card--phase2 fade-up">
+          <div class="phase-card__dot">2</div>
+          <div class="phase-card__header">
+            <span class="phase-card__icon">🚀</span>
+            <div class="phase-card__title-group">
+              <div class="phase-card__phase-label">Phase 2</div>
+              <h3 class="phase-card__title">Growth</h3>
+            </div>
+            <span class="phase-card__weeks">Weeks 7 - 14</span>
+          </div>
+          <ul class="phase-card__tasks">
+            <li><strong>Week 7-8:</strong> Mobile app core (React Native)</li>
+            <li><strong>Week 9-10:</strong> SomaAI conversation engine</li>
+            <li><strong>Week 10-11:</strong> Social media automation setup</li>
+            <li><strong>Week 11-12:</strong> Email marketing sequences</li>
+            <li><strong>Week 12-13:</strong> Lead funnels & landing pages</li>
+            <li><strong>Week 13-14:</strong> Testing, optimization, launch</li>
+          </ul>
+          <div class="phase-card__footer">
+            <span class="phase-card__deliverable">📱 Mobile app in stores + AI partner + marketing running</span>
+            <span class="phase-card__milestone">🎯 Growth on autopilot</span>
+          </div>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="phase-card phase-card--phase3 fade-up">
+          <div class="phase-card__dot">3</div>
+          <div class="phase-card__header">
+            <span class="phase-card__icon">📈</span>
+            <div class="phase-card__title-group">
+              <div class="phase-card__phase-label">Phase 3</div>
+              <h3 class="phase-card__title">Scale</h3>
+            </div>
+            <span class="phase-card__weeks">Weeks 15 - 20</span>
+          </div>
+          <ul class="phase-card__tasks">
+            <li><strong>Week 15-16:</strong> Analytics command center</li>
+            <li><strong>Week 16-17:</strong> Advanced AI features (pronunciation, adaptive)</li>
+            <li><strong>Week 17-18:</strong> Group classes & referral system</li>
+            <li><strong>Week 18-19:</strong> Tutor performance dashboards</li>
+            <li><strong>Week 19-20:</strong> Final QA, documentation, training</li>
+          </ul>
+          <div class="phase-card__footer">
+            <span class="phase-card__deliverable">🎁 Complete ecosystem + comprehensive training</span>
+            <span class="phase-card__milestone">🎯 Ready for 500+ students</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WHAT YOU GET EACH WEEK ===================== -->
+  <section class="weekly-rhythm fade-up">
+    <div class="container">
+      <div class="weekly-rhythm__header">
+        <span class="section-label" style="color: var(--accent);">Cadence</span>
+        <h2 class="section-title" style="color: var(--white);">What You Get Each Week</h2>
+        <p class="section-desc section-desc--light">Consistent communication, no guessing. You'll always know where things stand.</p>
+      </div>
+
+      <div class="weekly-rhythm__grid">
+        <div class="rhythm-card">
+          <div class="rhythm-card__day">Monday</div>
+          <div class="rhythm-card__icon">📋</div>
+          <h3 class="rhythm-card__title">Sprint Planning</h3>
+          <p class="rhythm-card__desc">We align on the week's priorities and set clear goals together.</p>
+        </div>
+        <div class="rhythm-card">
+          <div class="rhythm-card__day">Wednesday</div>
+          <div class="rhythm-card__icon">💬</div>
+          <h3 class="rhythm-card__title">Progress Check-in</h3>
+          <p class="rhythm-card__desc">Quick async update or call — you see what's moving forward.</p>
+        </div>
+        <div class="rhythm-card">
+          <div class="rhythm-card__day">Friday</div>
+          <div class="rhythm-card__icon">🎬</div>
+          <h3 class="rhythm-card__title">Demo Day</h3>
+          <p class="rhythm-card__desc">We show you what's been built that week — live and interactive.</p>
+        </div>
+        <div class="rhythm-card">
+          <div class="rhythm-card__day">Always</div>
+          <div class="rhythm-card__icon">⚡</div>
+          <h3 class="rhythm-card__title">Slack Channel</h3>
+          <p class="rhythm-card__desc">Real-time communication for questions, ideas, and quick decisions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== YOUR INVOLVEMENT ===================== -->
+  <section class="involvement fade-up">
+    <div class="container">
+      <div class="involvement__header">
+        <span class="section-label">Your Role</span>
+        <h2 class="section-title">What Tina Needs to Provide</h2>
+        <p class="section-desc">Minimal time commitment, maximum impact. Here's what we need from you.</p>
+      </div>
+
+      <div class="involvement__grid">
+        <div class="involvement-item">
+          <div class="involvement-item__icon">⏱️</div>
+          <div>
+            <h4 class="involvement-item__title">2-3 Hours Per Week</h4>
+            <p class="involvement-item__desc">For feedback sessions, approvals, and quick check-ins to keep everything on track.</p>
+          </div>
+        </div>
+        <div class="involvement-item">
+          <div class="involvement-item__icon">🎨</div>
+          <div>
+            <h4 class="involvement-item__title">Brand Assets</h4>
+            <p class="involvement-item__desc">Logo files, brand colors, photographs, and any existing marketing materials.</p>
+          </div>
+        </div>
+        <div class="involvement-item">
+          <div class="involvement-item__icon">📚</div>
+          <div>
+            <h4 class="involvement-item__title">Content & Curriculum</h4>
+            <p class="involvement-item__desc">Lesson content, curriculum structure, and teaching methodology details.</p>
+          </div>
+        </div>
+        <div class="involvement-item">
+          <div class="involvement-item__icon">🔑</div>
+          <div>
+            <h4 class="involvement-item__title">Access to Current Tools</h4>
+            <p class="involvement-item__desc">Login credentials for existing tools, hosting, social accounts, and platforms.</p>
+          </div>
+        </div>
+        <div class="involvement-item">
+          <div class="involvement-item__icon">📅</div>
+          <div>
+            <h4 class="involvement-item__title">Tutor Schedules</h4>
+            <p class="involvement-item__desc">Availability schedules for all tutors to configure the booking system correctly.</p>
+          </div>
+        </div>
+        <div class="involvement-item">
+          <div class="involvement-item__icon">💡</div>
+          <div>
+            <h4 class="involvement-item__title">Vision & Feedback</h4>
+            <p class="involvement-item__desc">Your ideas, preferences, and honest feedback at every stage of the build.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="involvement__note">
+        💡 <strong>We do the heavy lifting.</strong> Your role is guidance and feedback — we handle everything else.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== QUALITY ASSURANCE ===================== -->
+  <section class="qa-section fade-up">
+    <div class="container">
+      <div class="qa-section__header">
+        <span class="section-label" style="color: var(--accent);">Quality</span>
+        <h2 class="section-title" style="color: var(--white);">Quality Assurance</h2>
+        <p class="section-desc section-desc--light">We don't just build it — we make sure it works flawlessly, everywhere, for everyone.</p>
+      </div>
+
+      <div class="qa-section__grid">
+        <div class="qa-item">
+          <div class="qa-item__icon">📱</div>
+          <h3 class="qa-item__title">20+ Device Combos</h3>
+          <p class="qa-item__desc">Testing across every device and browser combination your students might use.</p>
+        </div>
+        <div class="qa-item">
+          <div class="qa-item__icon">⚡</div>
+          <h3 class="qa-item__title">Under 2s Load Time</h3>
+          <p class="qa-item__desc">Performance-optimized so every page loads in under 2 seconds, guaranteed.</p>
+        </div>
+        <div class="qa-item">
+          <div class="qa-item__icon">🔒</div>
+          <h3 class="qa-item__title">Security Audit</h3>
+          <p class="qa-item__desc">Full penetration testing and security audit to protect student data.</p>
+        </div>
+        <div class="qa-item">
+          <div class="qa-item__icon">🛡️</div>
+          <h3 class="qa-item__title">GDPR Compliance</h3>
+          <p class="qa-item__desc">Complete privacy compliance review to meet international data regulations.</p>
+        </div>
+        <div class="qa-item">
+          <div class="qa-item__icon">♿</div>
+          <h3 class="qa-item__title">WCAG 2.1 Accessible</h3>
+          <p class="qa-item__desc">Accessibility testing ensures every student can use the platform comfortably.</p>
+        </div>
+        <div class="qa-item">
+          <div class="qa-item__icon">📊</div>
+          <h3 class="qa-item__title">1000+ Users Ready</h3>
+          <p class="qa-item__desc">Load testing for 1,000+ concurrent users so the platform scales with you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== POST-LAUNCH SUPPORT ===================== -->
+  <section class="post-launch fade-up">
+    <div class="container">
+      <div class="post-launch__header">
+        <span class="section-label">After Launch</span>
+        <h2 class="section-title">Post-Launch Support</h2>
+        <p class="section-desc">We don't disappear after launch. Here's your ongoing support plan for the first year.</p>
+      </div>
+
+      <div class="post-launch__timeline">
+        <div class="support-card">
+          <div class="support-card__period support-card__period--m1">Month 1-3</div>
+          <div class="support-card__content">
+            <h4 class="support-card__title">Intensive Support</h4>
+            <p class="support-card__desc">Weekly check-ins, rapid bug fixes, performance optimization, and user feedback integration. We're right there with you as real students start using the platform.</p>
+          </div>
+        </div>
+        <div class="support-card">
+          <div class="support-card__period support-card__period--m4">Month 4-6</div>
+          <div class="support-card__content">
+            <h4 class="support-card__title">Growth Monitoring</h4>
+            <p class="support-card__desc">Bi-weekly check-ins, feature tweaks based on usage data, analytics review, and marketing performance optimization to accelerate student acquisition.</p>
+          </div>
+        </div>
+        <div class="support-card">
+          <div class="support-card__period support-card__period--m7">Month 7-12</div>
+          <div class="support-card__content">
+            <h4 class="support-card__title">Scaling & Evolution</h4>
+            <p class="support-card__desc">Monthly check-ins, scaling support as your student base grows, and planning for new features and capabilities based on what the data tells us.</p>
+          </div>
+        </div>
+        <div class="support-card">
+          <div class="support-card__period support-card__period--always">Always</div>
+          <div class="support-card__content">
+            <h4 class="support-card__title">Guaranteed Response</h4>
+            <p class="support-card__desc">48-hour response time for standard requests, emergency fixes within 4 hours. You'll never feel stranded — we're a message away.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA ===================== -->
+  <section class="page-cta fade-up">
+    <div class="container">
+      <h2 class="section-title" style="color: var(--white);">Let's start the journey.</h2>
+      <p class="section-desc section-desc--light" style="max-width: 500px; margin: 0 auto 32px;">Week 1 begins when you're ready.</p>
+      <div class="page-cta__actions">
+        <a href="index.html" class="btn btn--primary">Back to Full Proposal</a>
+        <a href="mailto:hello@tradefiti.com" class="btn btn--outline">Schedule a Call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__brand">
+          <span class="nav__logo-icon">S</span>
+          <span>Soma Languages</span>
+          <span class="footer__x">&times;</span>
+          <span class="cta-partner__t" style="width:28px;height:28px;font-size:12px">T</span>
+          <span>Tradefiti</span>
+        </div>
+        <p class="footer__copy">This proposal is confidential and prepared exclusively for Soma Languages. &copy; 2026 Tradefiti.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

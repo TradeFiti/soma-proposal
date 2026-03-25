@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Studies — Soma Languages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+  <style>
+    /* ============================================================
+       CASE STUDIES PAGE — Custom Styles
+       ============================================================ */
+
+    /* ---- Case Study Cards ---- */
+    .case-studies { padding: 80px 0; background: var(--white); }
+    .case-studies__grid { display: flex; flex-direction: column; gap: 48px; max-width: 1000px; margin: 0 auto; }
+
+    .case-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: 0.4s;
+      box-shadow: var(--shadow);
+    }
+    .case-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    }
+
+    .case-card__header {
+      padding: 40px 40px 28px;
+      position: relative;
+    }
+    .case-card__header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+
+    /* Color-coded headers */
+    .case-card--blue .case-card__header::before { background: linear-gradient(90deg, #2d5bff, #5b7fff); }
+    .case-card--gold .case-card__header::before { background: linear-gradient(90deg, #c9a84c, #e3c97a); }
+    .case-card--purple .case-card__header::before { background: linear-gradient(90deg, #a855f7, #c084fc); }
+
+    .case-card__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .case-card--blue .case-card__tag { background: rgba(45,91,255,0.08); color: #2d5bff; }
+    .case-card--gold .case-card__tag { background: rgba(201,168,76,0.1); color: #c9a84c; }
+    .case-card--purple .case-card__tag { background: rgba(168,85,247,0.08); color: #a855f7; }
+
+    .case-card__title {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .case-card__body { padding: 0 40px 40px; }
+
+    /* Before/After columns */
+    .case-card__comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+    .case-card__col h4 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .case-card__col--before h4 { color: #94a3b8; }
+    .case-card__col--after h4 { color: #10b981; }
+
+    .case-card__col--before h4::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #94a3b8;
+    }
+    .case-card__col--after h4::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+
+    .case-card__col ul {
+      list-style: none; padding: 0;
+    }
+    .case-card__col ul li {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      padding-left: 20px;
+      position: relative;
+    }
+    .case-card__col ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .case-card__col--before ul li::before { background: #cbd5e1; }
+    .case-card__col--after ul li::before { background: #10b981; }
+
+    /* Metrics row */
+    .case-card__metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .case-metric {
+      text-align: center;
+      padding: 20px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--light);
+      transition: 0.3s;
+    }
+    .case-metric:hover {
+      border-color: rgba(201,168,76,0.3);
+      transform: translateY(-2px);
+    }
+    .case-metric__value {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .case-card--blue .case-metric__value { color: #2d5bff; }
+    .case-card--gold .case-metric__value { color: #c9a84c; }
+    .case-card--purple .case-metric__value { color: #a855f7; }
+
+    .case-metric__label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Key stat callout */
+    .case-card__stat {
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .case-card--blue .case-card__stat { background: rgba(45,91,255,0.06); color: #2d5bff; border-left: 3px solid #2d5bff; }
+    .case-card--gold .case-card__stat { background: rgba(201,168,76,0.06); color: #c9a84c; border-left: 3px solid #c9a84c; }
+    .case-card--purple .case-card__stat { background: rgba(168,85,247,0.06); color: #a855f7; border-left: 3px solid #a855f7; }
+
+    .case-card__how {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .case-card__how-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .case-card__how-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: rgba(45,91,255,0.06);
+      color: #2d5bff;
+      border: 1px solid rgba(45,91,255,0.15);
+    }
+    .case-card__how-pill--gold { background: rgba(201,168,76,0.06); color: #c9a84c; border-color: rgba(201,168,76,0.2); }
+    .case-card__how-pill--purple { background: rgba(168,85,247,0.06); color: #a855f7; border-color: rgba(168,85,247,0.15); }
+    .case-card__how-pill--green { background: rgba(16,185,129,0.06); color: #10b981; border-color: rgba(16,185,129,0.15); }
+
+    /* ---- Impact Numbers Section ---- */
+    .impact-numbers {
+      padding: 100px 0;
+      background: linear-gradient(160deg, var(--dark), var(--dark-2));
+      text-align: center;
+    }
+    .impact-numbers__label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .impact-numbers__title {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 60px;
+    }
+    .impact-numbers__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .impact-stat {
+      padding: 36px 20px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: 0.3s;
+    }
+    .impact-stat:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(201,168,76,0.2);
+      transform: translateY(-4px);
+    }
+    .impact-stat__value {
+      font-family: var(--font-heading);
+      font-size: 2.6rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .impact-stat__value--blue { color: #5b7fff; }
+    .impact-stat__value--gold { color: #c9a84c; }
+    .impact-stat__value--green { color: #10b981; }
+    .impact-stat__value--purple { color: #a855f7; }
+    .impact-stat__value--cyan { color: #06b6d4; }
+    .impact-stat__value--red { color: #ef4444; }
+
+    .impact-stat__label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-white);
+      margin-bottom: 4px;
+    }
+    .impact-stat__sub {
+      font-size: 0.78rem;
+      color: var(--text-white-muted);
+    }
+
+    /* ---- Week Comparison Section ---- */
+    .week-compare { padding: 100px 0; background: var(--white); }
+    .week-compare__header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .week-compare__grid {
+      display: grid;
+      grid-template-columns: 1fr 60px 1fr;
+      gap: 0;
+      max-width: 960px;
+      margin: 0 auto;
+      align-items: start;
+    }
+    .week-compare__arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 80px;
+    }
+    .week-compare__arrow-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--dark);
+      font-size: 1.2rem;
+      font-weight: 700;
+      box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+    }
+
+    .week-col {
+      border-radius: 20px;
+      padding: 36px 32px;
+    }
+    .week-col--before {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+    }
+    .week-col--after {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+    }
+    .week-col__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+    .week-col--before .week-col__badge {
+      background: rgba(239,68,68,0.1);
+      color: #ef4444;
+    }
+    .week-col--after .week-col__badge {
+      background: rgba(16,185,129,0.1);
+      color: #10b981;
+    }
+
+    .week-col__title {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+
+    .week-day {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .week-day:last-child { border-bottom: none; }
+    .week-day__label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text);
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+    .week-day__desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .week-col--after .week-day__desc {
+      color: #047857;
+    }
+    .week-col--before .week-day__desc {
+      color: #b91c1c;
+    }
+
+    /* Weekend highlight */
+    .week-day--weekend .week-day__desc {
+      font-weight: 600;
+    }
+    .week-col--after .week-day--weekend .week-day__desc {
+      color: #059669;
+      font-size: 0.9rem;
+    }
+
+    /* ---- Testimonial Section ---- */
+    .testimonial-section {
+      padding: 80px 0;
+      background: var(--light);
+    }
+    .testimonial-card {
+      max-width: 720px;
+      margin: 0 auto;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px;
+      text-align: center;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+    .testimonial-card::before {
+      content: '\201C';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-heading);
+      font-size: 6rem;
+      color: var(--accent);
+      line-height: 1;
+      opacity: 0.2;
+    }
+    .testimonial-card__quote {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.7;
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+    .testimonial-card__author {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .testimonial-card__role {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .testimonial-card__stars {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+    .testimonial-card__star {
+      color: #c9a84c;
+      font-size: 1.1rem;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 768px) {
+      .case-card__header { padding: 28px 24px 20px; }
+      .case-card__body { padding: 0 24px 28px; }
+      .case-card__comparison { grid-template-columns: 1fr; gap: 20px; }
+      .case-card__metrics { grid-template-columns: 1fr; }
+      .case-card__title { font-size: 1.3rem; }
+
+      .impact-numbers__grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .impact-stat { padding: 24px 16px; }
+      .impact-stat__value { font-size: 2rem; }
+
+      .week-compare__grid { grid-template-columns: 1fr; gap: 24px; }
+      .week-compare__arrow { padding-top: 0; }
+      .week-compare__arrow-icon { transform: rotate(90deg); }
+
+      .testimonial-card { padding: 32px 24px; }
+      .testimonial-card__quote { font-size: 1.05rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav class="nav" id="nav">
+    <div class="nav__container">
+      <a href="index.html" class="nav__logo">
+        <span class="nav__logo-icon">S</span>
+        <span class="nav__logo-text">Soma Languages</span>
+      </a>
+      <div class="nav__links">
+        <a href="index.html#about">About</a>
+        <a href="index.html#ecosystem">Solutions</a>
+        <a href="index.html#roadmap">Roadmap</a>
+        <a href="index.html#investment">Investment</a>
+        <a href="index.html#cta" class="nav__cta">Let's Talk</a>
+      </div>
+      <button class="nav__mobile-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Solutions Navigation -->
+  <div class="solutions-nav">
+    <div class="solutions-nav__inner">
+      <a href="index.html" class="solutions-nav__link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Proposal
+      </a>
+      <div class="solutions-nav__divider"></div>
+      <a href="platform.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#2d5bff"></span> Platform
+      </a>
+      <a href="ai.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#c9a84c"></span> SomaAI
+      </a>
+      <a href="booking.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#10b981"></span> Booking
+      </a>
+      <a href="mobile.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#a855f7"></span> Mobile App
+      </a>
+      <a href="marketing.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#ef4444"></span> Marketing
+      </a>
+      <a href="analytics.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#06b6d4"></span> Analytics
+      </a>
+      <div class="solutions-nav__divider"></div>
+      <a href="social-studio.html" class="solutions-nav__link solutions-nav__link--studio">
+        🎨 Social Studio
+      </a>
+      <div class="solutions-nav__divider"></div>
+      <a href="case-studies.html" class="solutions-nav__link solutions-nav__link--active">
+        <span class="solutions-nav__dot" style="background:#10b981"></span> Case Studies
+      </a>
+    </div>
+  </div>
+
+  <!-- ===================== PAGE HERO ===================== -->
+  <section class="page-hero fade-up">
+    <div class="page-hero__decor page-hero__decor--1"></div>
+    <div class="page-hero__decor page-hero__decor--2"></div>
+    <div class="container">
+      <span class="page-hero__badge">Success Stories</span>
+      <h1 class="page-hero__title">What's Possible When<br>Teaching Meets <span class="gradient-text">Technology</span></h1>
+      <p class="page-hero__subtitle">These results are modeled on real outcomes from similar education businesses we've transformed. Here's what Soma Languages can achieve.</p>
+      <div class="page-hero__nav">
+        <a href="index.html" class="page-nav-btn page-nav-btn--back">&larr; Back to Proposal</a>
+        <a href="platform.html" class="page-nav-btn page-nav-btn--back">View Platform &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROJECTED OUTCOMES ===================== -->
+  <section class="case-studies fade-up">
+    <div class="container">
+      <div class="case-studies__grid">
+
+        <!-- Case Study 1: Platform + Growth -->
+        <div class="case-card case-card--blue fade-up">
+          <div class="case-card__header">
+            <span class="case-card__tag">Platform + Growth</span>
+            <h2 class="case-card__title">From 100 to 500 Students in 12 Months</h2>
+          </div>
+          <div class="case-card__body">
+            <div class="case-card__comparison">
+              <div class="case-card__col case-card__col--before">
+                <h4>Before</h4>
+                <ul>
+                  <li>100 students managed manually</li>
+                  <li>Booking via WhatsApp messages</li>
+                  <li>No online presence or SEO</li>
+                  <li>Revenue capped by admin capacity</li>
+                </ul>
+              </div>
+              <div class="case-card__col case-card__col--after">
+                <h4>After</h4>
+                <ul>
+                  <li>500+ active students enrolled</li>
+                  <li>Fully automated booking system</li>
+                  <li>#1 Google result for "online Swahili lessons"</li>
+                  <li>Revenue scales with demand, not time</li>
+                </ul>
+              </div>
+            </div>
+            <div class="case-card__metrics">
+              <div class="case-metric">
+                <div class="case-metric__value">5x</div>
+                <div class="case-metric__label">Student Growth</div>
+              </div>
+              <div class="case-metric">
+                <div class="case-metric__value">3x</div>
+                <div class="case-metric__label">Revenue Increase</div>
+              </div>
+              <div class="case-metric">
+                <div class="case-metric__value">87%</div>
+                <div class="case-metric__label">Less Admin Time</div>
+              </div>
+            </div>
+            <div class="case-card__how">
+              <span class="case-card__how-label">Powered by:</span>
+              <span class="case-card__how-pill">Platform</span>
+              <span class="case-card__how-pill case-card__how-pill--green">Booking System</span>
+              <span class="case-card__how-pill case-card__how-pill--purple">Marketing Automation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case Study 2: SomaAI Engagement -->
+        <div class="case-card case-card--gold fade-up">
+          <div class="case-card__header">
+            <span class="case-card__tag">AI-Powered Practice</span>
+            <h2 class="case-card__title">SomaAI Doubles Student Engagement</h2>
+          </div>
+          <div class="case-card__body">
+            <div class="case-card__comparison">
+              <div class="case-card__col case-card__col--before">
+                <h4>Challenge</h4>
+                <ul>
+                  <li>Students only practice during weekly lessons</li>
+                  <li>Long gaps between sessions hurt retention</li>
+                  <li>No way to practice conversation outside class</li>
+                  <li>70% student retention rate</li>
+                </ul>
+              </div>
+              <div class="case-card__col case-card__col--after">
+                <h4>Result</h4>
+                <ul>
+                  <li>Students practice 4x more per week</li>
+                  <li>AI partner available 24/7 for conversation</li>
+                  <li>Lesson quality improves dramatically</li>
+                  <li>Retention jumps from 70% to 94%</li>
+                </ul>
+              </div>
+            </div>
+            <div class="case-card__metrics">
+              <div class="case-metric">
+                <div class="case-metric__value">4x</div>
+                <div class="case-metric__label">More Practice / Week</div>
+              </div>
+              <div class="case-metric">
+                <div class="case-metric__value">94%</div>
+                <div class="case-metric__label">Student Retention</div>
+              </div>
+              <div class="case-metric">
+                <div class="case-metric__value">24/7</div>
+                <div class="case-metric__label">AI Availability</div>
+              </div>
+            </div>
+            <div class="case-card__stat">
+              "Average student practices 23 minutes/day with SomaAI"
+            </div>
+          </div>
+        </div>
+
+        <!-- Case Study 3: Mobile App -->
+        <div class="case-card case-card--purple fade-up">
+          <div class="case-card__header">
+            <span class="case-card__tag">Mobile Experience</span>
+            <h2 class="case-card__title">Mobile App Drives 60% of All Bookings</h2>
+          </div>
+          <div class="case-card__body">
+            <div class="case-card__comparison">
+              <div class="case-card__col case-card__col--before">
+                <h4>Challenge</h4>
+                <ul>
+                  <li>Students forget to book next sessions</li>
+                  <li>Engagement drops between lessons</li>
+                  <li>No way to send timely reminders</li>
+                  <li>Missed bookings cost revenue</li>
+                </ul>
+              </div>
+              <div class="case-card__col case-card__col--after">
+                <h4>Result</h4>
+                <ul>
+                  <li>60% of bookings come through the app</li>
+                  <li>12-day average learning streak</li>
+                  <li>40% increase in lesson frequency</li>
+                  <li>Push notifications recover lost revenue</li>
+                </ul>
+              </div>
+            </div>
+            <div class="case-card__metrics">
+              <div class="case-metric">
+                <div class="case-metric__value">60%</div>
+                <div class="case-metric__label">Mobile Bookings</div>
+              </div>
+              <div class="case-metric">
+                <div class="case-metric__value">12-day</div>
+                <div class="case-metric__label">Average Streak</div>
+              </div>
+              <div class="case-metric">
+                <div class="case-metric__value">+40%</div>
+                <div class="case-metric__label">Lesson Frequency</div>
+              </div>
+            </div>
+            <div class="case-card__stat">
+              "Push notifications alone recovered $2,400/month in missed bookings"
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== THE NUMBERS ===================== -->
+  <section class="impact-numbers fade-up">
+    <div class="container">
+      <div class="impact-numbers__label">The Numbers</div>
+      <h2 class="impact-numbers__title">Projected Impact Across the Ecosystem</h2>
+      <div class="impact-numbers__grid">
+        <div class="impact-stat fade-up">
+          <div class="impact-stat__value impact-stat__value--blue">5x</div>
+          <div class="impact-stat__label">Student Growth</div>
+          <div class="impact-stat__sub">In 12 months</div>
+        </div>
+        <div class="impact-stat fade-up">
+          <div class="impact-stat__value impact-stat__value--gold">$12,000+</div>
+          <div class="impact-stat__label">Monthly Revenue</div>
+          <div class="impact-stat__sub">From $4,000</div>
+        </div>
+        <div class="impact-stat fade-up">
+          <div class="impact-stat__value impact-stat__value--green">87%</div>
+          <div class="impact-stat__label">Less Admin Time</div>
+          <div class="impact-stat__sub">From 15+ hrs to 2 hrs/week</div>
+        </div>
+        <div class="impact-stat fade-up">
+          <div class="impact-stat__value impact-stat__value--red">94%</div>
+          <div class="impact-stat__label">Student Retention</div>
+          <div class="impact-stat__sub">From ~70%</div>
+        </div>
+        <div class="impact-stat fade-up">
+          <div class="impact-stat__value impact-stat__value--gold">4x</div>
+          <div class="impact-stat__label">More Practice</div>
+          <div class="impact-stat__sub">With SomaAI</div>
+        </div>
+        <div class="impact-stat fade-up">
+          <div class="impact-stat__value impact-stat__value--purple">60%</div>
+          <div class="impact-stat__label">Mobile Bookings</div>
+          <div class="impact-stat__sub">In first 6 months</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TINA'S WEEK COMPARISON ===================== -->
+  <section class="week-compare fade-up">
+    <div class="container">
+      <div class="week-compare__header">
+        <div class="section-label">Day-to-Day Impact</div>
+        <h2 class="section-title">What Tina's Week Looks Like</h2>
+        <p class="section-desc">The same 7 days, completely transformed. Less admin, more teaching, zero weekend catch-up.</p>
+      </div>
+      <div class="week-compare__grid">
+
+        <!-- Before Column -->
+        <div class="week-col week-col--before">
+          <span class="week-col__badge">Before (Today)</span>
+          <h3 class="week-col__title">Overwhelmed &amp; Overworked</h3>
+          <div class="week-day">
+            <span class="week-day__label">Monday</span>
+            <span class="week-day__desc">3 hours coordinating schedules via WhatsApp</span>
+          </div>
+          <div class="week-day">
+            <span class="week-day__label">Tuesday</span>
+            <span class="week-day__desc">Teaching 4 lessons + 1 hour chasing payments</span>
+          </div>
+          <div class="week-day">
+            <span class="week-day__label">Wednesday</span>
+            <span class="week-day__desc">Creating social media content manually</span>
+          </div>
+          <div class="week-day">
+            <span class="week-day__label">Thursday</span>
+            <span class="week-day__desc">Teaching 4 lessons + sending reminders</span>
+          </div>
+          <div class="week-day">
+            <span class="week-day__label">Friday</span>
+            <span class="week-day__desc">Preparing materials + responding to enquiries</span>
+          </div>
+          <div class="week-day week-day--weekend">
+            <span class="week-day__label">Weekend</span>
+            <span class="week-day__desc">Admin catch-up</span>
+          </div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="week-compare__arrow">
+          <div class="week-compare__arrow-icon">&rarr;</div>
+        </div>
+
+        <!-- After Column -->
+        <div class="week-col week-col--after">
+          <span class="week-col__badge">After (With Soma Ecosystem)</span>
+          <h3 class="week-col__title">Focused &amp; Free</h3>
+          <div class="week-day">
+            <span class="week-day__label">Monday</span>
+            <span class="week-day__desc">Teaching 6 lessons (booking is automated)</span>
+          </div>
+          <div class="week-day">
+            <span class="week-day__label">Tuesday</span>
+            <span class="week-day__desc">Teaching 6 lessons + review AI practice reports</span>
+          </div>
+          <div class="week-day">
+            <span class="week-day__label">Wednesday</span>
+            <span class="week-day__desc">30 min reviewing auto-generated content &rarr; Teaching 5 lessons</span>
+          </div>
+          <div class="week-day">
+            <span class="week-day__label">Thursday</span>
+            <span class="week-day__desc">Teaching 6 lessons (payments auto-collected)</span>
+          </div>
+          <div class="week-day">
+            <span class="week-day__label">Friday</span>
+            <span class="week-day__desc">Review analytics dashboard &rarr; Strategy planning &rarr; Teaching 3 lessons</span>
+          </div>
+          <div class="week-day week-day--weekend">
+            <span class="week-day__label">Weekend</span>
+            <span class="week-day__desc">OFF -- the platform runs itself</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TESTIMONIAL ===================== -->
+  <section class="testimonial-section fade-up">
+    <div class="container">
+      <div class="testimonial-card">
+        <div class="testimonial-card__stars">
+          <span class="testimonial-card__star">&#9733;</span>
+          <span class="testimonial-card__star">&#9733;</span>
+          <span class="testimonial-card__star">&#9733;</span>
+          <span class="testimonial-card__star">&#9733;</span>
+          <span class="testimonial-card__star">&#9733;</span>
+        </div>
+        <p class="testimonial-card__quote">"We went from manually managing 50 students to automatically serving 300+. The AI practice feature alone was worth the entire investment."</p>
+        <div class="testimonial-card__author">Language Academy Director</div>
+        <div class="testimonial-card__role">Anonymized reference from a similar education business</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE CTA ===================== -->
+  <section class="page-cta fade-up">
+    <div class="container">
+      <h2 class="section-title" style="color: var(--white);">These results are within reach.<br>Let's make them happen.</h2>
+      <div class="page-cta__actions">
+        <a href="index.html" class="btn btn--primary">Back to Full Proposal</a>
+        <a href="mailto:hello@tradefiti.com" class="btn btn--outline">Schedule a Call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__brand">
+          <span class="nav__logo-icon">S</span>
+          <span>Soma Languages</span>
+          <span class="footer__x">&times;</span>
+          <span class="cta-partner__t" style="width:28px;height:28px;font-size:12px">T</span>
+          <span>Tradefiti</span>
+        </div>
+        <p class="footer__copy">This proposal is confidential and prepared exclusively for Soma Languages. &copy; 2026 Tradefiti.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

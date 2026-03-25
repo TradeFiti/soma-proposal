@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pages.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
   <style>
     /* ---- Studio-specific Layout ---- */
@@ -362,9 +363,44 @@
       .studio-poster { width: min(360px, 90vw); }
       .studio-caption { border-left: none; border-top: 1px solid #1a2236; }
     }
+    .solutions-nav { top: 0; }
+    .studio { margin-top: 92px; height: calc(100vh - 92px); }
   </style>
 </head>
 <body>
+
+  <!-- Solutions Navigation -->
+  <div class="solutions-nav">
+    <div class="solutions-nav__inner">
+      <a href="index.html" class="solutions-nav__link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Proposal
+      </a>
+      <div class="solutions-nav__divider"></div>
+      <a href="platform.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#2d5bff"></span> Platform
+      </a>
+      <a href="ai.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#c9a84c"></span> SomaAI
+      </a>
+      <a href="booking.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#10b981"></span> Booking
+      </a>
+      <a href="mobile.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#a855f7"></span> Mobile App
+      </a>
+      <a href="marketing.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#ef4444"></span> Marketing
+      </a>
+      <a href="analytics.html" class="solutions-nav__link">
+        <span class="solutions-nav__dot" style="background:#06b6d4"></span> Analytics
+      </a>
+      <div class="solutions-nav__divider"></div>
+      <a href="social-studio.html" class="solutions-nav__link solutions-nav__link--studio solutions-nav__link--active">
+        🎨 Social Studio
+      </a>
+    </div>
+  </div>
 
   <div class="studio">
 
